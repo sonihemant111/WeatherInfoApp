@@ -20,6 +20,7 @@
 		B9F0EB6B2625A647003EEF19 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F0EB6A2625A647003EEF19 /* WeatherAPI.swift */; };
 		B9F0EB762625A930003EEF19 /* WeatherListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F0EB752625A930003EEF19 /* WeatherListViewModel.swift */; };
 		B9F0EB7B2625A93D003EEF19 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F0EB7A2625A93D003EEF19 /* WeatherViewModel.swift */; };
+		B9F0EB8D2625B796003EEF19 /* AddWeatherCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F0EB8C2625B796003EEF19 /* AddWeatherCityViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		B9F0EB6A2625A647003EEF19 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		B9F0EB752625A930003EEF19 /* WeatherListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherListViewModel.swift; sourceTree = "<group>"; };
 		B9F0EB7A2625A93D003EEF19 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		B9F0EB8C2625B796003EEF19 /* AddWeatherCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWeatherCityViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +152,7 @@
 		B9F0EB442625A0CD003EEF19 /* WeatherInformation */ = {
 			isa = PBXGroup;
 			children = (
-				B9F0EB842625AA10003EEF19 /* Add City Screen */,
+				B9F0EB842625AA10003EEF19 /* Add Weather City Screen */,
 				B9F0EB832625AA09003EEF19 /* Settings Screen */,
 				B9F0EB822625A9EC003EEF19 /* Home Screen */,
 			);
@@ -232,11 +234,44 @@
 			path = "Settings Screen";
 			sourceTree = "<group>";
 		};
-		B9F0EB842625AA10003EEF19 /* Add City Screen */ = {
+		B9F0EB842625AA10003EEF19 /* Add Weather City Screen */ = {
+			isa = PBXGroup;
+			children = (
+				B9F0EB8B2625B75B003EEF19 /* View */,
+				B9F0EB8A2625B74A003EEF19 /* Controller */,
+				B9F0EB892625B742003EEF19 /* ViewModel */,
+				B9F0EB882625B73D003EEF19 /* Model */,
+			);
+			path = "Add Weather City Screen";
+			sourceTree = "<group>";
+		};
+		B9F0EB882625B73D003EEF19 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Add City Screen";
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B9F0EB892625B742003EEF19 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B9F0EB8A2625B74A003EEF19 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B9F0EB8C2625B796003EEF19 /* AddWeatherCityViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B9F0EB8B2625B75B003EEF19 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,6 +411,7 @@
 				B9F0EB7B2625A93D003EEF19 /* WeatherViewModel.swift in Sources */,
 				B9F0EB762625A930003EEF19 /* WeatherListViewModel.swift in Sources */,
 				B9F0EB0D26257F20003EEF19 /* SceneDelegate.swift in Sources */,
+				B9F0EB8D2625B796003EEF19 /* AddWeatherCityViewController.swift in Sources */,
 				B9F0EB5A2625A449003EEF19 /* WeatherListTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
