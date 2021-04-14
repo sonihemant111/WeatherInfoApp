@@ -18,27 +18,34 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FVG-EW-o5P">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FVG-EW-o5P">
                         <rect key="frame" x="10" y="0.0" width="300" height="57"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="India" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1UC-r7-qWW">
-                                <rect key="frame" x="0.0" y="0.0" width="245" height="57"/>
+                                <rect key="frame" x="0.0" y="0.0" width="265" height="57"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="WiW-qT-9oh"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="14"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHC-fd-Pou">
-                                <rect key="frame" x="255" y="0.0" width="45" height="57"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHC-fd-Pou">
+                                <rect key="frame" x="270" y="0.0" width="100" height="57"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="AgH-8V-7I7"/>
+                                    <constraint firstAttribute="width" constant="100" id="AgH-8V-7I7"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <color key="textColor" systemColor="systemPurpleColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="i8F-I7-Tzb">
+                                <rect key="frame" x="275" y="0.0" width="25" height="57"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="2uc-eZ-eji"/>
+                                </constraints>
+                                <color key="color" red="0.68627452850000004" green="0.32156863810000003" blue="0.87058818339999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </activityIndicatorView>
                         </subviews>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wap-BE-hp8">
@@ -49,7 +56,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.96909016370773315" green="0.89797061681747437" blue="0.96864455938339233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="FVG-EW-o5P" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="7oB-oI-FFI"/>
                     <constraint firstAttribute="bottom" secondItem="Wap-BE-hp8" secondAttribute="bottom" id="AfI-uY-E02"/>
@@ -61,6 +68,12 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="cityNameLabel" destination="1UC-r7-qWW" id="RFs-Rm-ud6"/>
+                <outlet property="loaderView" destination="i8F-I7-Tzb" id="4pL-XI-Osk"/>
+                <outlet property="temperatureLabel" destination="zHC-fd-Pou" id="3V0-eT-kwe"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="90.066964285714278"/>
         </tableViewCell>
     </objects>
