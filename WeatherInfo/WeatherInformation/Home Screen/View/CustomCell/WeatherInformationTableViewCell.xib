@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -20,13 +21,13 @@
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FVG-EW-o5P">
                         <rect key="frame" x="10" y="0.0" width="300" height="57"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="India" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1UC-r7-qWW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="India" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1UC-r7-qWW">
                                 <rect key="frame" x="0.0" y="0.0" width="245" height="57"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="WiW-qT-9oh"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="systemPinkColor"/>
+                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="17"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100°" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHC-fd-Pou">
@@ -35,17 +36,28 @@
                                     <constraint firstAttribute="width" constant="45" id="AgH-8V-7I7"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                <color key="textColor" systemColor="systemBlueColor"/>
+                                <color key="textColor" systemColor="systemPurpleColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wap-BE-hp8">
+                        <rect key="frame" x="0.0" y="56.5" width="320" height="0.5"/>
+                        <color key="backgroundColor" red="0.68627452850000004" green="0.32156863810000003" blue="0.87058818339999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.29999999999999999" id="kEg-3M-wZ5"/>
+                        </constraints>
+                    </view>
                 </subviews>
+                <color key="backgroundColor" red="0.96909016370773315" green="0.89797061681747437" blue="0.96864455938339233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="FVG-EW-o5P" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="7oB-oI-FFI"/>
-                    <constraint firstAttribute="bottom" secondItem="FVG-EW-o5P" secondAttribute="bottom" priority="750" id="DkY-vn-gr2"/>
+                    <constraint firstAttribute="bottom" secondItem="Wap-BE-hp8" secondAttribute="bottom" id="AfI-uY-E02"/>
+                    <constraint firstItem="Wap-BE-hp8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="BPy-0n-psa"/>
                     <constraint firstItem="FVG-EW-o5P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="YNE-Nt-1O9"/>
+                    <constraint firstAttribute="trailing" secondItem="Wap-BE-hp8" secondAttribute="trailing" id="gOH-4Q-gDg"/>
                     <constraint firstAttribute="trailing" secondItem="FVG-EW-o5P" secondAttribute="trailing" constant="10" id="moP-PZ-APB"/>
+                    <constraint firstItem="Wap-BE-hp8" firstAttribute="top" secondItem="FVG-EW-o5P" secondAttribute="bottom" priority="799" id="sfS-my-Tcx"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -53,11 +65,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
