@@ -12,7 +12,7 @@ class WeatherListViewModel {
     var updateUI: ((_ indexPath: IndexPath) -> Void)?
     
     init() {
-        self.setupCities()
+        self.setupDefaultCities()
     }
     
     // Method to add new weather view model
@@ -28,43 +28,62 @@ class WeatherListViewModel {
     
     // As per the requirement we have to show below three cities weather data on Home Page
     // Sydney, Melbourne and Brisbane
-    func setupCities() {
+    func setupDefaultCities() {
         let weatherViewModelSydney = WeatherViewModel()
         weatherViewModelSydney.weatherData.name = "Sydney"
         weatherViewModels.append(weatherViewModelSydney)
         weatherViewModelSydney.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelSydney.getWeatherData(cityName: "Sydney", scale: .fahrenheit)
         weatherViewModelSydney.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
             self.weatherViewModels[indexPath.row] = weatherViewModel
             self.updateUI(indexPath)
         }
+        weatherViewModelSydney.getWeatherData()
+
 
         let weatherViewModelMelbourne = WeatherViewModel()
         weatherViewModelMelbourne.weatherData.name = "Melbourne"
         weatherViewModels.append(weatherViewModelMelbourne)
         weatherViewModelMelbourne.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelMelbourne.getWeatherData(cityName: "Melbourne", scale: .fahrenheit)
         weatherViewModelMelbourne.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
             self.weatherViewModels[indexPath.row] = weatherViewModel
             self.updateUI(indexPath)
         }
+        weatherViewModelMelbourne.getWeatherData()
         
         let weatherViewModelBrisbane = WeatherViewModel()
         weatherViewModelBrisbane.weatherData.name = "Brisbane"
         weatherViewModels.append(weatherViewModelBrisbane)
         weatherViewModelBrisbane.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelBrisbane.getWeatherData(cityName: "Brisbane", scale: .fahrenheit)
         weatherViewModelBrisbane.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
             self.weatherViewModels[indexPath.row] = weatherViewModel
             self.updateUI(indexPath)
         }
+        weatherViewModelBrisbane.getWeatherData()
+
+    }
+    
+    // Add new City to get weather
+    func addNewCity(_ cityName: String) {
+        let weatherViewModel = WeatherViewModel()
+        weatherViewModel.weatherData.name = cityName
+        weatherViewModels.append(weatherViewModel)
+        weatherViewModel.indexPath = IndexPath(row: self.numberOfRows(0) - 1, section: 0)
+        weatherViewModel.updateUI = { [weak self] (weatherViewModel, indexPath) in
+            guard let `self` = self else { return }
+            print(indexPath.row)
+            print(self.weatherViewModels.count)
+            
+            self.weatherViewModels[indexPath.row - 1] = weatherViewModel
+            self.updateUI(indexPath)
+        }
+        weatherViewModel.getWeatherData()
     }
         
     // Method to get number of section
-    func getNumberOfSection() -> Int {
+    func numberOfSection() -> Int {
         return 1
     }
     

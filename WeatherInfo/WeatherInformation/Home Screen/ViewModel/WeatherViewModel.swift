@@ -8,25 +8,26 @@
 import Foundation
 class WeatherViewModel {
     
-    var weatherData: WeatherData
+    var weatherData: WeatherModel
     var indexPath: IndexPath?
     
     var updateUI: ((_ weatherViewModel: WeatherViewModel, _ indexPath: IndexPath) -> Void)?
     
     init() {
-        weatherData = WeatherData()
+        weatherData = WeatherModel()
     }
     
-    // Method to get Weather Data according tio input
-    func getWeatherData(cityName: String, scale: TemperatureScale) {
+    // Method to get Weather Data according to input
+    func getWeatherData() {
         guard let closure = self.updateUI, let indexPath = self.indexPath else { return }
-
+        
         if (AppNetworking.isConnected()) {
-            WeatherAPI.shared.getCurrentWeather(cityName: cityName, tempScale: scale) { [weak self] (data, err)  in
+            WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: .fahrenheit) { [weak self] (data, err)  in
                 guard let `self` = self, let weatherData = data else { return }
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
                 } else {
+                    self.weatherData.isRefreshNeeded = false
                     self.weatherData = weatherData
                 }
                 closure(self, indexPath)
@@ -50,6 +51,6 @@ class WeatherViewModel {
     }
     
     var isRefreshNeeded: Bool {
-        return weatherData.isRefreshNeeded
+        return (weatherData.isRefreshNeeded)
     }
 }

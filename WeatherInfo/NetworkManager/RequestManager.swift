@@ -15,7 +15,8 @@ class RequestManager {
     ///   - url: url
     ///   - completion: completion
     func get(with url: URL, completion: @escaping completion) {
-        let request = self.getRequest(url, "GET")
+        var request = self.getRequest(url, "GET")
+        request.timeoutInterval = 30
         NetworkManager.main.requestToServer(request: request) { (data, request, error) in
             if let data = data {
                 let str = String(decoding: Data(data), as: UTF8.self)

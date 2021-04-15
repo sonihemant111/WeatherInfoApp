@@ -7,12 +7,13 @@
 
 import Foundation
 
-class WeatherAPI {
+class WeatherAPI: NetworkManagerProtocol {
+    
     static let shared = WeatherAPI()
     private let request = RequestManager()
     
-    func getCurrentWeather(cityName: String, tempScale: TemperatureScale, completionHandler: @escaping ((WeatherData?, WeatherInfoError?) -> ())) {
-        
+    
+    func fetchCurrentWeather(cityName: String, tempScale: TemperatureScale, completion: @escaping (WeatherModel?, WeatherInfoError?) -> ()) {
         guard let sanitizedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
             print("Error: while sanitizing city name")
             return
@@ -38,19 +39,19 @@ class WeatherAPI {
             // Check for any errors
             if let error = error {
                 print("error calling GET on current weather:", error.localizedDescription)
-                completionHandler(nil, .noDataFound)
+                completion(nil, .noDataFound)
                 return
             }
             
             // Make sure we got data
             guard let responseData = data else {
                 print("Error: did not receive data")
-                completionHandler(nil, .noDataFound)
+                completion(nil, .noDataFound)
                 return
             }
             
             do {
-                guard let jsonData = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
+                guard let jsonData = try! JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
                     print("Error trying to convert data to JSON")
                     return
                 }
@@ -58,11 +59,11 @@ class WeatherAPI {
                 
                 // Parse the result as JSON, since that's what the API provides
                 let decoder = JSONDecoder()
-                let weatherData = try decoder.decode(WeatherData.self, from: responseData)
-                completionHandler(weatherData, nil)
+                let weatherData = try decoder.decode(WeatherModel?.self, from: responseData)
+                completion(weatherData, nil)
             } catch {
                 print("Error: conversion to JSON")
-                completionHandler(nil, .noDataFound)
+                completion(nil, .noDataFound)
             }
         }
     }

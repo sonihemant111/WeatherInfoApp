@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+// String constants
+struct StringConstants {
+    static let noDataFoundMessage = "No Data Found"
+    static let noInternetConnectionMessage = "Please check your Internet Connection"
+    static let loadingMessage = "loading.."
+}

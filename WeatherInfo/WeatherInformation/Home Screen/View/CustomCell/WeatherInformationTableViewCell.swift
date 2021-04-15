@@ -12,6 +12,8 @@ class WeatherInformationTableViewCell: UITableViewCell {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var refreshButton: UIButton!
+    
+    var didTapOnRefreshButton: ((_ indexPath: IndexPath) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,6 +25,7 @@ class WeatherInformationTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    // Method to configure cell
     func configureCell(_ weatherViewModel: WeatherViewModel) {
         cityNameLabel.text = weatherViewModel.cityName
         temperatureLabel.text = weatherViewModel.temperature
@@ -49,6 +52,13 @@ class WeatherInformationTableViewCell: UITableViewCell {
     
     // MARK: UIButton Action
     @IBAction func refreshButtonAction(_ sender: UIButton) {
-        
+        guard let closure = self.didTapOnRefreshButton else { return }
+        if let indexPath = self.indexPath {
+            // Show Loader
+            loaderView.isHidden = false
+            refreshButton.isHidden = true
+            loaderView.startAnimating()
+            closure(indexPath)
+        }
     }
 }
