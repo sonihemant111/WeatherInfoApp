@@ -19,9 +19,20 @@ class WeatherViewModel {
     
     // Method to get Weather Data according tio input
     func getWeatherData(cityName: String, scale: TemperatureScale) {
-        WeatherAPI.shared.getCurrentWeather(cityName: cityName, tempScale: scale) { [weak self] (data) in
-            guard let `self` = self, let closure = self.updateUI, let indexPath = self.indexPath else { return }
-            self.weatherData = data
+        guard let closure = self.updateUI, let indexPath = self.indexPath else { return }
+
+        if (AppNetworking.isConnected()) {
+            WeatherAPI.shared.getCurrentWeather(cityName: cityName, tempScale: scale) { [weak self] (data, err)  in
+                guard let `self` = self, let weatherData = data else { return }
+                if err != nil {
+                    self.weatherData.isRefreshNeeded = true
+                } else {
+                    self.weatherData = weatherData
+                }
+                closure(self, indexPath)
+            }
+        } else {
+            self.weatherData.isRefreshNeeded = true
             closure(self, indexPath)
         }
     }
@@ -36,5 +47,9 @@ class WeatherViewModel {
         } else {
             return ((weatherData.main.temp?.description ?? "") + "\(TemperatureScale.fahrenheit.symbolForScale())")
         }
+    }
+    
+    var isRefreshNeeded: Bool {
+        return weatherData.isRefreshNeeded
     }
 }

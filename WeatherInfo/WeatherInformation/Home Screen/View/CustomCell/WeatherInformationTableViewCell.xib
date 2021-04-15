@@ -39,6 +39,14 @@
                                 <color key="textColor" systemColor="systemPurpleColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dl6-bv-fmY">
+                                <rect key="frame" x="270" y="0.0" width="50" height="57"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Hbi-kL-ZJY"/>
+                                </constraints>
+                                <color key="tintColor" red="0.68627452850000004" green="0.32156863810000003" blue="0.87058818339999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" image="refreshIcon"/>
+                            </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="i8F-I7-Tzb">
                                 <rect key="frame" x="275" y="0.0" width="25" height="57"/>
                                 <constraints>
@@ -72,12 +80,14 @@
             <connections>
                 <outlet property="cityNameLabel" destination="1UC-r7-qWW" id="RFs-Rm-ud6"/>
                 <outlet property="loaderView" destination="i8F-I7-Tzb" id="4pL-XI-Osk"/>
+                <outlet property="refreshButton" destination="Dl6-bv-fmY" id="ZhZ-Vf-wC9"/>
                 <outlet property="temperatureLabel" destination="zHC-fd-Pou" id="3V0-eT-kwe"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="90.066964285714278"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="refreshIcon" width="28.5" height="28.5"/>
         <systemColor name="systemPurpleColor">
             <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -7,6 +7,16 @@
 
 import Foundation
 
+enum AppNetworking {
+    static func isConnected() -> Bool {
+        do {
+            return try Reachability().connection != .unavailable
+        } catch {
+            return false
+        }
+    }
+}
+
 class NetworkManager {
     public static let main = NetworkManager()
     private init() {}

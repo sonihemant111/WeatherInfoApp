@@ -21,8 +21,7 @@ class WeatherListTableViewController: UITableViewController {
             guard let `self` = self else { return }
             DispatchQueue.main.async {
                 self.tableView.beginUpdates()
-                self.tableView.reloadRows(at: [indexPath],
-                                          with: .fade)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
                 self.tableView.endUpdates()
             }
         }
