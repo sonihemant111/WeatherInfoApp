@@ -10,39 +10,24 @@ import Foundation
 
 class WeatherListTableViewController: UITableViewController {
     
-    var viewModel = WeatherListViewModel()
-    var arrCities = [WeatherData]()
+    private var weatherListViewModel = WeatherListViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.registerNib()
         self.configureNavigationBar()
         
-        // Add initially three cities
-        // Sydney, Melbourne and Brisbane
-        var weatherOfSydney = WeatherData()
-        weatherOfSydney.name = "Sydney"
-        arrCities.append(weatherOfSydney)
-        
-        var weatherOfMelbourne = WeatherData()
-        weatherOfMelbourne.name = "Melbourne"
-        arrCities.append(weatherOfMelbourne)
-        
-        var weatherOfBrisbane = WeatherData()
-        weatherOfBrisbane.name = "Brisbane"
-        arrCities.append(weatherOfBrisbane)
-        
-        viewModel.updateUI = { [weak self] (weatherData) in
-            guard let self = self else { return }
-            // filter array with city name and update that city's weather data
-            if let row = self.arrCities.firstIndex(where: {$0.name == weatherData.name}) {
-                self.arrCities[row] = weatherData
+        self.weatherListViewModel.updateUI = { [weak self] (indexPath) in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
         }
-        viewModel.getWeatherData(cityName: "Sydney", scale: .fahrenheit)
-        viewModel.getWeatherData(cityName: "Melbourne", scale: .fahrenheit)
-        viewModel.getWeatherData(cityName: "Brisbane", scale: .fahrenheit)
+    }
+    
+    func addWeatherDidSave(_ weatherViewModel: WeatherViewModel) {
+        self.weatherListViewModel.addWeatherViewModel(weatherViewModel)
+        self.tableView.reloadData()
     }
     
     // Method to register Nib
@@ -65,23 +50,23 @@ class WeatherListTableViewController: UITableViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-          return .lightContent
+        return .lightContent
     }
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return weatherListViewModel.getNumberOfSection()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return arrCities.count
+        return weatherListViewModel.numberOfRows(section)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherInformationTableViewCell", for: indexPath) as! WeatherInformationTableViewCell
-        cell.configureCell(arrCities[indexPath.row])
+        // fetching weather view model at specific index to display the weather data
+        let weatherViewModel = weatherListViewModel.modelAt(indexPath.row)
+        cell.configureCell(weatherViewModel)
         return cell
     }
     

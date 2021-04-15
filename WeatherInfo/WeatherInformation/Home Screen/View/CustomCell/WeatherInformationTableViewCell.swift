@@ -22,13 +22,11 @@ class WeatherInformationTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureCell(_ weatherData: WeatherData) {
-        
-        guard let cityName = weatherData.name, let temperature = weatherData.main.temp else { return }
-        cityNameLabel.text = cityName
-        temperatureLabel.text = temperature.description + "\(TemperatureScale.fahrenheit.symbolForScale())"
+    func configureCell(_ weatherViewModel: WeatherViewModel) {
+        cityNameLabel.text = weatherViewModel.cityName
+        temperatureLabel.text = weatherViewModel.temperature
 
-        if temperature.description.isEmpty {
+        if weatherViewModel.temperature.isEmpty {
             loaderView.startAnimating()
             loaderView.isHidden = false
             temperatureLabel.isHidden = true
@@ -38,5 +36,4 @@ class WeatherInformationTableViewCell: UITableViewCell {
             temperatureLabel.isHidden = false
         }
     }
-    
 }
