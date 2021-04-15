@@ -7,11 +7,21 @@
 
 import Foundation
 
+enum WeatherInfoError {
+    case noDataFound
+    case noInternetConnection
+}
+
 struct WeatherData: Codable {
     var dt: Int?
     var name: String?
     var main = MainData()
     var weather = [WeatherConditions]()
+    var isRefreshNeeded: Bool = false
+    
+    private enum CodingKeys : String, CodingKey {
+        case dt, name, main, weather
+    }
 }
 
 struct MainData: Codable {
