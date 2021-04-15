@@ -66,6 +66,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
 	<key>WeatherAPIKey</key>
 	<string>5ba48a9cab0a8c6675cb484e741b7a2f</string>
 </dict>
