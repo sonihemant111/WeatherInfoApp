@@ -20,7 +20,10 @@ class WeatherListTableViewController: UITableViewController {
         self.weatherListViewModel.updateUI = { [weak self] (indexPath) in
             guard let `self` = self else { return }
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.tableView.beginUpdates()
+                self.tableView.reloadRows(at: [indexPath],
+                                          with: .fade)
+                self.tableView.endUpdates()
             }
         }
     }

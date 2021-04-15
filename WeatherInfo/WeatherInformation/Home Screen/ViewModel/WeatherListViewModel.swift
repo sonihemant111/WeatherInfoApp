@@ -32,7 +32,7 @@ class WeatherListViewModel {
         let weatherViewModelSydney = WeatherViewModel()
         weatherViewModelSydney.weatherData.name = "Sydney"
         weatherViewModels.append(weatherViewModelSydney)
-        weatherViewModelSydney.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 1)
+        weatherViewModelSydney.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
         weatherViewModelSydney.getWeatherData(cityName: "Sydney", scale: .fahrenheit)
         weatherViewModelSydney.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
@@ -43,7 +43,7 @@ class WeatherListViewModel {
         let weatherViewModelMelbourne = WeatherViewModel()
         weatherViewModelMelbourne.weatherData.name = "Melbourne"
         weatherViewModels.append(weatherViewModelMelbourne)
-        weatherViewModelMelbourne.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 1)
+        weatherViewModelMelbourne.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
         weatherViewModelMelbourne.getWeatherData(cityName: "Melbourne", scale: .fahrenheit)
         weatherViewModelMelbourne.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
@@ -54,7 +54,7 @@ class WeatherListViewModel {
         let weatherViewModelBrisbane = WeatherViewModel()
         weatherViewModelBrisbane.weatherData.name = "Brisbane"
         weatherViewModels.append(weatherViewModelBrisbane)
-        weatherViewModelBrisbane.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 1)
+        weatherViewModelBrisbane.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
         weatherViewModelBrisbane.getWeatherData(cityName: "Brisbane", scale: .fahrenheit)
         weatherViewModelBrisbane.updateUI = { [weak self] (weatherViewModel, indexPath) in
             guard let `self` = self else { return }
