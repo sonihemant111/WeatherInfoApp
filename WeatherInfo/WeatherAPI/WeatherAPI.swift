@@ -11,7 +11,7 @@ class WeatherAPI {
     static let shared = WeatherAPI()
     private let request = RequestManager()
     
-    func getCurrentWeather(cityName: String, tempScale: TemperatureScale, completionHandler: @escaping ((WeatherData) -> ())) {
+    func getCurrentWeather(cityName: String, tempScale: TemperatureScale, completionHandler: @escaping ((WeatherData?, WeatherInfoError?) -> ())) {
         
         guard let sanitizedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
             print("Error: while sanitizing city name")
@@ -24,7 +24,7 @@ class WeatherAPI {
         }
         
         // Set up the URL request
-        let endpointString = "https://api.openweathermap.org/data/2.5/weather?q=\(sanitizedCityName)&units=\(tempScale.rawValue)&APPID=\(key)"
+        let endpointString = URLManager.init().fetchWeather + "\(sanitizedCityName)&units=\(tempScale.rawValue)&APPID=\(key)"
         
         print("final request string:", endpointString)
         
@@ -38,12 +38,14 @@ class WeatherAPI {
             // Check for any errors
             if let error = error {
                 print("error calling GET on current weather:", error.localizedDescription)
+                completionHandler(nil, .noDataFound)
                 return
             }
             
             // Make sure we got data
             guard let responseData = data else {
                 print("Error: did not receive data")
+                completionHandler(nil, .noDataFound)
                 return
             }
             
@@ -57,9 +59,10 @@ class WeatherAPI {
                 // Parse the result as JSON, since that's what the API provides
                 let decoder = JSONDecoder()
                 let weatherData = try decoder.decode(WeatherData.self, from: responseData)
-                completionHandler(weatherData)
+                completionHandler(weatherData, nil)
             } catch {
                 print("Error: conversion to JSON")
+                completionHandler(nil, .noDataFound)
             }
         }
     }
