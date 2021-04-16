@@ -50,6 +50,30 @@ class WeatherViewModel {
         }
     }
     
+    var humidity: String {
+        if (weatherData.main.humidity?.description ?? "").isEmpty {
+            return ""
+        } else {
+            return (weatherData.main.humidity?.description ?? "")
+        }
+    }
+    
+    var minTemperature: String {
+        if (weatherData.main.temp_min?.description ?? "").isEmpty {
+            return ""
+        } else {
+            return (weatherData.main.temp_min?.description ?? "")
+        }
+    }
+    
+    var maxTemperature: String {
+        if (weatherData.main.temp_max?.description ?? "").isEmpty {
+            return ""
+        } else {
+            return (weatherData.main.temp_max?.description ?? "")
+        }
+    }
+    
     var isRefreshNeeded: Bool {
         return (weatherData.isRefreshNeeded)
     }

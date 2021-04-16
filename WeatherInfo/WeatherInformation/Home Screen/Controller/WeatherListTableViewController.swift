@@ -18,22 +18,7 @@ class WeatherListTableViewController: UITableViewController {
         self.registerNib()
         self.configureNavigationBar()
         self.checkInternetConnection()
-        self.weatherListViewModel.updateUI = { [weak self] (indexPath) in
-            guard let `self` = self else { return }
-            DispatchQueue.main.async {
-                self.tableView.beginUpdates()
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-                self.tableView.endUpdates()
-            }
-        }
-        
-        /*
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.weatherListViewModel.addNewCity("Jodhpur")
-            self.tableView.beginUpdates()
-            self.tableView.insertRows(at: [IndexPath(row: self.weatherListViewModel.numberOfRows(0) - 1, section: 0)], with: .automatic)
-            self.tableView.endUpdates()
-        }*/
+        self.weatherListViewModel.delegate = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -47,7 +32,7 @@ class WeatherListTableViewController: UITableViewController {
     
     // Method to register Nib
     func registerNib() {
-        self.tableView.register(UINib(nibName: "WeatherInformationTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherInformationTableViewCell")
+        self.tableView.register(UINib(nibName: "WeatherInformationTableViewCell", bundle: nil), forCellReuseIdentifier: WeatherInformationTableViewCell.reuseIdentifier)
     }
     
     // check Internet connection
@@ -55,7 +40,6 @@ class WeatherListTableViewController: UITableViewController {
         if !AppNetworking.isConnected() {
             // Show a Toast message
             self.view.makeToast(StringConstants.noInternetConnectionMessage, duration: 1.0, position: .center)
-
         }
     }
     
@@ -82,7 +66,7 @@ class WeatherListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherInformationTableViewCell", for: indexPath) as! WeatherInformationTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: WeatherInformationTableViewCell.reuseIdentifier, for: indexPath) as! WeatherInformationTableViewCell
         // fetching weather view model at specific index to display the weather data
         let weatherViewModel = weatherListViewModel.modelAt(indexPath.row)
         cell.configureCell(weatherViewModel)
@@ -93,7 +77,31 @@ class WeatherListTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Redirect user to weather detail screen
+        let weatherDetailVC:WeatherDetailViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
+        let weatherModel = self.weatherListViewModel.modelAt(indexPath.row)
+        weatherDetailVC.currentSelectedWeatherViewModel = weatherModel
+        self.navigationController?.pushViewController(weatherDetailVC, animated: true)
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+// MARK: WeatherListViewModelProtocol
+extension WeatherListTableViewController: WeatherListViewModelProtocol {
+    func didReceiveSuccessAt(_ indexPath: IndexPath) {
+        // Update UI
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func didFailWithError() {
+        // show toast message
     }
 }

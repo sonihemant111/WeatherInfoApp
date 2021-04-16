@@ -18,7 +18,7 @@ struct WeatherModel: Codable {
     var main = Main()
     let sys = Sys()
     let timezone: Int64 = 0
-    let dt_txt: String = ""
+    var dt_txt: String?
     var weather = [Weather]()
     var isRefreshNeeded: Bool = false
     
@@ -57,14 +57,12 @@ struct ForecastModel: Codable {
 struct City: Codable {
     let name: String?
     let country: String?
-    
 }
 
-
 struct WeatherInfo {
-    let temp: Float
-    let min_temp: Float
-    let max_temp: Float
+    let temp: Double
+    let min_temp: Double
+    let max_temp: Double
     let description: String
     let icon: String
     let time: String

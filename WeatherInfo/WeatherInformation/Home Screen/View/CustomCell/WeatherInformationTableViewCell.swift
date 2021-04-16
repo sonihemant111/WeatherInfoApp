@@ -8,6 +8,9 @@
 import UIKit
 
 class WeatherInformationTableViewCell: UITableViewCell {
+    
+    static var reuseIdentifier: String = "WeatherInformationTableViewCell"
+    
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var loaderView: UIActivityIndicatorView!

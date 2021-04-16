@@ -7,9 +7,14 @@
 
 import Foundation
 
+protocol WeatherListViewModelProtocol {
+    func didReceiveSuccessAt(_ indexPath: IndexPath)
+    func didFailWithError()
+}
+
 class WeatherListViewModel {
     var weatherViewModels = [WeatherViewModel]()
-    var updateUI: ((_ indexPath: IndexPath) -> Void)?
+    var delegate: WeatherListViewModelProtocol?
     
     init() {
         self.setupDefaultCities()
@@ -22,8 +27,8 @@ class WeatherListViewModel {
     
     // Update UI Once we fetch the weather data
     func updateUI(_ indexPath: IndexPath) {
-        guard let closure = self.updateUI else { return }
-        closure(indexPath)
+        guard let delegate = self.delegate else { return }
+        delegate.didReceiveSuccessAt(indexPath)
     }
     
     // As per the requirement we have to show below three cities weather data on Home Page
