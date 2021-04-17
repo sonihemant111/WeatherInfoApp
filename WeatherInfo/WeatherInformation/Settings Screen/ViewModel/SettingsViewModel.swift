@@ -11,6 +11,7 @@ import Foundation
 class SettingsViewModel {
     
     var settingViewModels = [SettingsModel]()
+    
     var numberOfRow: Int {
         return settingViewModels.count
     }
@@ -22,7 +23,7 @@ class SettingsViewModel {
         
         // adding Fahrenheit
         let fahrenheitSettingsModel = SettingsModel()
-        fahrenheitSettingsModel.tempUnit = "fahrenheit"
+        fahrenheitSettingsModel.tempUnit = StringConstants.fahrenheit
         if settingsModel?.tempUnit.lowercased() == fahrenheitSettingsModel.tempUnit {
             fahrenheitSettingsModel.isSelected = true
         }
@@ -30,7 +31,7 @@ class SettingsViewModel {
         
         // adding Fahrenheit
         let celsiusSettingsModel = SettingsModel()
-        celsiusSettingsModel.tempUnit = "celsius"
+        celsiusSettingsModel.tempUnit = StringConstants.celsius
         if settingsModel?.tempUnit.lowercased() == celsiusSettingsModel.tempUnit {
             celsiusSettingsModel.isSelected = true
         }

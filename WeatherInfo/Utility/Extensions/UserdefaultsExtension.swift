@@ -11,6 +11,7 @@ enum UserDefaultsKeys: String {
     case SavedTempUnit
 }
 
+// Extension of UserDefaults
 extension UserDefaults {
     // Generic method to set object
     func setCodableObject<T: Codable>(_ data: T?, forKey defaultName: String) {

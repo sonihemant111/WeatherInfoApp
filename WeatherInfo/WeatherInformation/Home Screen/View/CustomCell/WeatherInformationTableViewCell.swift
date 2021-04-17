@@ -33,7 +33,7 @@ class WeatherInformationTableViewCell: UITableViewCell {
         cityNameLabel.text = weatherViewModel.cityName
         temperatureLabel.text = weatherViewModel.temperature
 
-        // Show refresh button
+        // Show/Hide refresh button
         if weatherViewModel.isRefreshNeeded {
             loaderView.stopAnimating()
             loaderView.isHidden = true

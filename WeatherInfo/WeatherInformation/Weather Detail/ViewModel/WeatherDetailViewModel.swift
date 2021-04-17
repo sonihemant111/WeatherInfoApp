@@ -59,6 +59,7 @@ class WeatherDetailViewModel {
         return (self.currentSelectedWeatherViewModel?.minTemperature ?? "")
     }
     
+    // to get current date
     var currentDate: String {
         let date = Date()
         let dateFormatter = DateFormatter()

@@ -21,6 +21,7 @@ class ForecastCollectionViewCell: UICollectionViewCell, UICollectionViewDataSour
         // Initialization code
     }
     
+    // Method to configure Collection View
     func configureCollectionView() {
         self.collectionView.collectionViewLayout = self.createCompositionalLayout()
         self.collectionView.dataSource = self

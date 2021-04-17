@@ -11,6 +11,7 @@ import UIKit
 let imageCache = NSCache<AnyObject, AnyObject>()
 let cachedImages = NSCache<NSString, UIImage>()
 
+// Extension of UIImageView
 extension UIImageView {
     func loadImageFromURL(url: String) {
         self.image = nil

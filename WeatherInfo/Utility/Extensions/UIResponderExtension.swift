@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// Extension of UIResponder
 extension UIResponder {
     /**
      * Returns the next responder in the responder chain cast to the given type, or

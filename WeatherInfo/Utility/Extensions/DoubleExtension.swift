@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+// Extension of Double
 extension Double {
     func truncate(places : Int)-> Double
     {
