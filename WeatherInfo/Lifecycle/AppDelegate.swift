@@ -12,6 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // set default user settings if user has not set any yet
+        UserDefaults.standard.saveDefaultUserSettings()
         return true
     }
     

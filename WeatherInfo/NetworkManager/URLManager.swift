@@ -8,9 +8,18 @@
 import Foundation
 
 class URLManager {
-    private let baseURL: String = "https://api.openweathermap.org/"
+    private let APIBaseURL: String = "http://api.openweathermap.org/"
+    private let baseURL: String = "http://openweathermap.org"
     
     var fetchWeather: String {
-        return baseURL + "data/2.5/weather?q="
+        return APIBaseURL + "data/2.5/weather?q="
+    }
+    
+    var fetchIconImage: String {
+        return baseURL + "/img/wn/"
+    }
+    
+    var fetchForcastInfo: String {
+        return APIBaseURL + "data/2.5/forecast?q="
     }
 }

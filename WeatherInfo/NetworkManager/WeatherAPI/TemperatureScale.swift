@@ -22,4 +22,17 @@ enum TemperatureScale: String {
             return "℉"
         }
     }
+    
+    static func getUserSavedSettingTempUnitType() -> TemperatureScale {
+        let settingsModel = UserDefaults.standard.getUserSavedSettings()
+        
+        if let tempUnit = settingsModel?.tempUnit.lowercased() {
+            if tempUnit == "fahrenheit" {
+                return TemperatureScale.fahrenheit
+            } else if tempUnit == "celsius" {
+                return TemperatureScale.celsius
+            }
+        }
+        return .fahrenheit
+    }
 }

@@ -22,7 +22,7 @@ class WeatherViewModel {
         guard let closure = self.updateUI, let indexPath = self.indexPath else { return }
         
         if (AppNetworking.isConnected()) {
-            WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: .fahrenheit) { [weak self] (data, err)  in
+            WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: TemperatureScale.getUserSavedSettingTempUnitType()) { [weak self] (data, err)  in
                 guard let `self` = self, let weatherData = data else { return }
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
@@ -46,7 +46,7 @@ class WeatherViewModel {
         if (weatherData.main.temp?.description ?? "").isEmpty {
             return ""
         } else {
-            return ((weatherData.main.temp?.description ?? "") + "\(TemperatureScale.fahrenheit.symbolForScale())")
+            return ((weatherData.main.temp?.description ?? "") + "\(TemperatureScale.getUserSavedSettingTempUnitType().symbolForScale())")
         }
     }
     
@@ -54,7 +54,7 @@ class WeatherViewModel {
         if (weatherData.main.humidity?.description ?? "").isEmpty {
             return ""
         } else {
-            return (weatherData.main.humidity?.description ?? "")
+            return (weatherData.main.humidity?.description ?? "") + "\(TemperatureScale.getUserSavedSettingTempUnitType().symbolForScale())"
         }
     }
     
@@ -62,7 +62,7 @@ class WeatherViewModel {
         if (weatherData.main.temp_min?.description ?? "").isEmpty {
             return ""
         } else {
-            return (weatherData.main.temp_min?.description ?? "")
+            return (weatherData.main.temp_min?.description ?? "") + "\(TemperatureScale.getUserSavedSettingTempUnitType().symbolForScale())"
         }
     }
     
@@ -70,7 +70,7 @@ class WeatherViewModel {
         if (weatherData.main.temp_max?.description ?? "").isEmpty {
             return ""
         } else {
-            return (weatherData.main.temp_max?.description ?? "")
+            return (weatherData.main.temp_max?.description ?? "") + "\(TemperatureScale.getUserSavedSettingTempUnitType().symbolForScale())"
         }
     }
     

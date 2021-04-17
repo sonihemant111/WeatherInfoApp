@@ -21,6 +21,10 @@ class WeatherListTableViewController: UITableViewController {
         self.weatherListViewModel.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -79,14 +83,19 @@ class WeatherListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Redirect user to weather detail screen
-        let weatherDetailVC:WeatherDetailViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
-        let weatherModel = self.weatherListViewModel.modelAt(indexPath.row)
-        weatherDetailVC.currentSelectedWeatherViewModel = weatherModel
-        self.navigationController?.pushViewController(weatherDetailVC, animated: true)
+        self.redirectToWeatherDetailScreen(indexPath)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    // Method to redirect user to weatherDetail screen
+    func redirectToWeatherDetailScreen(_ indexPath: IndexPath) {
+        let weatherDetailVC: WeatherDetailViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
+        let weatherModel = self.weatherListViewModel.modelAt(indexPath.row)
+        weatherDetailVC.currentSelectedWeatherViewModel = weatherModel
+        self.navigationController?.pushViewController(weatherDetailVC, animated: true)
     }
 }
 
