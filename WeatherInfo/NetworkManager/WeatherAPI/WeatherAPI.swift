@@ -77,7 +77,7 @@ class WeatherAPI: NetworkManagerProtocol {
         return nil
     }
     
-    
+    // Method to fetch forcast of specific city
     func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ()) {
         guard let key = getAPIKey() else { return }
         
