@@ -32,7 +32,7 @@ class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, U
     
     // Method to configure Navigation Bar
     func configureNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .white
     }
     

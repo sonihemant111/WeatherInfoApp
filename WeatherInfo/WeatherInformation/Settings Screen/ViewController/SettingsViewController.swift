@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol SettingsViewControllerProtocol {
+    func didUpdateUserSettings()
+}
+
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var viewModel = SettingsViewModel()
+    var delegate: SettingsViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +27,7 @@ class SettingsViewController: UIViewController {
     
     // Method to configure Navigation Bar
     func configureNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -52,5 +57,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         print(indexPath.row)
         viewModel.saveNewUserSettings(indexPath.row)
         self.tableView.reloadData()
+        guard let delegate = self.delegate else { return }
+        delegate.didUpdateUserSettings()
     }
 }

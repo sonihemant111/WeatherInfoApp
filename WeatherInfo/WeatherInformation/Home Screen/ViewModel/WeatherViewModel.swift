@@ -6,10 +6,17 @@
 //
 
 import Foundation
+
+protocol WeatherViewModelProtocol {
+    func didReceiveTemperatureData(_ indexPath: IndexPath)
+    func didFailWithError(_ indexPath: IndexPath)
+}
+
 class WeatherViewModel {
     
     var weatherData: WeatherModel
     var indexPath: IndexPath?
+    var delegate: WeatherViewModelProtocol?
     
     var updateUI: ((_ weatherViewModel: WeatherViewModel, _ indexPath: IndexPath) -> Void)?
     
@@ -19,27 +26,34 @@ class WeatherViewModel {
     
     // Method to get Weather Data according to input
     func getWeatherData() {
-        guard let closure = self.updateUI, let indexPath = self.indexPath else { return }
+        guard self.indexPath != nil else { return }
         
         if (AppNetworking.isConnected()) {
             WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: TemperatureScale.getUserSavedSettingTempUnitType()) { [weak self] (data, err)  in
-                guard let `self` = self, let weatherData = data else { return }
+                guard let `self` = self, let weatherData = data, let delegate = self.delegate, let indexPath = self.indexPath else { return }
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
                 } else {
                     self.weatherData.isRefreshNeeded = false
+                    let cityID = self.weatherData.cityID
                     self.weatherData = weatherData
+                    self.weatherData.cityID = cityID
                 }
-                closure(self, indexPath)
+                delegate.didReceiveTemperatureData(indexPath)
             }
         } else {
+            guard let delegate = self.delegate, let indexPath = self.indexPath else { return }
             self.weatherData.isRefreshNeeded = true
-            closure(self, indexPath)
+            delegate.didFailWithError(indexPath)
         }
     }
     
     var cityName: String {
         return weatherData.name?.capitalized ?? ""
+    }
+    
+    var cityID: Int64 {
+        return weatherData.cityID ?? 0
     }
     
     var temperature: String {
