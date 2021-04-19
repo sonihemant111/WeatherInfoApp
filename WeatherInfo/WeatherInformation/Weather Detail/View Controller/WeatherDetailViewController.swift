@@ -9,7 +9,6 @@ import UIKit
 
 class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    @IBOutlet weak var cityAndCountryNameLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
@@ -34,11 +33,11 @@ class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, U
     func configureNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .white
+        self.title = viewModel.currentSelectedCityName + ", " + viewModel.currentSelectedCountryName
     }
     
     // func display Current selected city's Weather Data
     func displayCurentSelectedCityData() {
-        self.cityAndCountryNameLabel.text = viewModel.currentSelectedCityName + ", " + viewModel.currentSelectedCountryName
         self.temperatureLabel.text = viewModel.currentSelectedCityTemperature
         self.dateLabel.text = viewModel.currentDate
         self.minimumTempLabel.text = viewModel.currentSelectedCityMinTemp
@@ -88,7 +87,6 @@ class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, U
         let layoutGroup = NSCollectionLayoutGroup.vertical(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
-        // layoutSection.orthogonalScrollingBehavior = .groupPagingCentered
         return layoutSection
     }
 }

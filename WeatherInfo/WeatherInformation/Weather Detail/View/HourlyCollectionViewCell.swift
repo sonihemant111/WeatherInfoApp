@@ -33,7 +33,13 @@ class HourlyCollectionViewCell: UICollectionViewCell {
         }
         
         temperatureSymbol.loadImageFromURL(url: URLManager.init().fetchIconImage + "\(item.icon)@2x.png")
-        temperatureLabel.text = String(item.temp.kelvinToCeliusConverter())
+        
+        let settingModel = UserDefaults.standard.getUserSavedSettings()
+        if settingModel?.tempUnit.lowercased() == StringConstants.fahrenheit {
+            temperatureLabel.text = String(item.temp.kelvinToCeliusConverter())
+        } else {
+            temperatureLabel.text = String(item.temp.kelvinToFahrenheitConverter())
+        }
     }
 
 }
