@@ -93,7 +93,9 @@ class DBManager {
         do {
             let localRealm = try Realm()
             let tasks = localRealm.objects(CityModel.self)
-            completionHandler(Array(tasks))
+            let predicate = NSPredicate(format: "isVisible = false")
+            let citiesList = tasks.filter(predicate)
+            completionHandler(Array(citiesList))
         } catch {
             print(error.localizedDescription)
         }
