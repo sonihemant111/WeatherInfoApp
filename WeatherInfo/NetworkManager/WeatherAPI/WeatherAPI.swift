@@ -80,7 +80,9 @@ class WeatherAPI: NetworkManagerProtocol {
     
     func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ()) {
         guard let key = getAPIKey() else { return }
-        let formattedCity = city.replacingOccurrences(of: " ", with: "+")
+        
+        // remove diacritics string example één to een from cityname
+        let formattedCity = (city.folding(options: .diacriticInsensitive, locale: .current)).replacingOccurrences(of: " ", with: "+")
         let API_URL = URLManager.init().fetchForcastInfo + "\(formattedCity)&appid=" + key
         
         var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
