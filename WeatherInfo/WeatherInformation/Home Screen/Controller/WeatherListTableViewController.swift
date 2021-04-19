@@ -109,6 +109,23 @@ class WeatherListTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem?.action = #selector(redirectToSettingsScreen)
     }
     
+    // Method to show alert
+    func showAlert(_ indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Alert", message: StringConstants.removeCityWarningMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { action in
+            // Update visibility status in DB
+            let weatherViewModel = self.weatherListViewModel.itemAt(indexPath.row)
+            self.dbManager.updateVisibilityStatusByCityID(weatherViewModel.cityID, false)
+            self.weatherListViewModel.removeItemAt(indexPath.row)
+            self.refreshWeatherData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "NO", style: .default, handler: { action in
+            // do nothing
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return weatherListViewModel.numberOfSection()
@@ -157,11 +174,7 @@ class WeatherListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItem = UIContextualAction(style: .destructive, title: "Delete") {  [weak self] (contextualAction, view, boolValue) in
             guard let `self` = self else { return }
-            // Update visibility status in DB
-            let weatherViewModel = self.weatherListViewModel.itemAt(indexPath.row)
-            self.dbManager.updateVisibilityStatusByCityID(weatherViewModel.cityID, false)
-            self.weatherListViewModel.removeItemAt(indexPath.row)
-            self.refreshWeatherData()
+            self.showAlert(indexPath)
         }
         let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
         return swipeActions
