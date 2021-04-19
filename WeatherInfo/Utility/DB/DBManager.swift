@@ -80,7 +80,7 @@ class DBManager {
         do {
             let localRealm = try Realm()
             let tasks = localRealm.objects(CityModel.self)
-            let predicate = NSPredicate(format: "(cityName CONTAINS[c] %@)", searchKeyword)
+            let predicate = NSPredicate(format: "(cityName CONTAINS[c] %@ AND isVisible = false)", searchKeyword)
             let cityList = tasks.filter(predicate)
             completionHandler(Array(cityList))
         } catch {
