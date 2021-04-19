@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+ 
 enum WeatherInfoError {
     case noDataFound
     case noInternetConnection
@@ -14,6 +14,7 @@ enum WeatherInfoError {
 
 struct WeatherModel: Codable {
     var dt: Int?
+    var cityID: Int64?
     var name: String?
     var main = Main()
     let sys = Sys()

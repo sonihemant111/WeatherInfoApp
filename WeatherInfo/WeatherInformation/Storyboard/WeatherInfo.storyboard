@@ -43,9 +43,6 @@
                     <navigationItem key="navigationItem" title="Weather" largeTitleDisplayMode="always" id="0d6-p6-kjG">
                         <barButtonItem key="leftBarButtonItem" image="SettingsIcon" id="UK6-v4-I65">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <segue destination="UeD-D1-P7y" kind="show" id="ffa-5x-jyj"/>
-                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="RcC-ch-68S">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,22 +56,6 @@
             </objects>
             <point key="canvasLocation" x="-425" y="86"/>
         </scene>
-        <!--Add City-->
-        <scene sceneID="rDP-jH-HBm">
-            <objects>
-                <viewController id="dgP-Dx-I7Q" customClass="AddWeatherCityViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="LOF-DH-p4i">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="490-kp-BYt"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Add City" id="RG0-m1-ZS9"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UjZ-J9-Lrg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1184.0579710144928" y="85.714285714285708"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="RPN-dq-qnx">
             <objects>
@@ -85,9 +66,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="dgP-Dx-I7Q" kind="relationship" relationship="rootViewController" id="ezP-RU-Iet"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsw-qZ-NbL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -96,13 +74,13 @@
         <!--Settings View Controller-->
         <scene sceneID="NWj-nY-uDO">
             <objects>
-                <viewController id="UeD-D1-P7y" customClass="SettingsViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="UeD-D1-P7y" customClass="SettingsViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jIZ-sW-nfA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jfj-4i-UnL">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="UeD-D1-P7y" id="WBt-SF-Hl0"/>
@@ -284,6 +262,64 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yi1-d5-BsH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1166.6666666666667" y="786.83035714285711"/>
+        </scene>
+        <!--Add City-->
+        <scene sceneID="dzh-nO-F4o">
+            <objects>
+                <viewController storyboardIdentifier="AddMoreCityViewController" id="p35-AK-DJQ" customClass="AddMoreCityViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vj8-sl-flW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3V-YL-QeV">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <subviews>
+                                    <searchBar contentMode="redraw" placeholder="Search city by name or location" translatesAutoresizingMaskIntoConstraints="NO" id="6kF-p7-8IK">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="p35-AK-DJQ" id="iCy-V6-vfE"/>
+                                        </connections>
+                                    </searchBar>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ilZ-Us-lhB">
+                                        <rect key="frame" x="0.0" y="56" width="414" height="796"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="p35-AK-DJQ" id="UzT-Qt-JDH"/>
+                                            <outlet property="delegate" destination="p35-AK-DJQ" id="3Il-i1-ZN5"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ilZ-Us-lhB" secondAttribute="bottom" id="4Bc-Bu-g73"/>
+                                    <constraint firstItem="ilZ-Us-lhB" firstAttribute="top" secondItem="6kF-p7-8IK" secondAttribute="bottom" id="Fko-5S-liT"/>
+                                    <constraint firstItem="6kF-p7-8IK" firstAttribute="leading" secondItem="U3V-YL-QeV" secondAttribute="leading" id="Gst-6d-4F2"/>
+                                    <constraint firstAttribute="trailing" secondItem="ilZ-Us-lhB" secondAttribute="trailing" id="YE1-P0-IGT"/>
+                                    <constraint firstItem="ilZ-Us-lhB" firstAttribute="leading" secondItem="U3V-YL-QeV" secondAttribute="leading" id="ecn-ZA-1h6"/>
+                                    <constraint firstAttribute="trailing" secondItem="6kF-p7-8IK" secondAttribute="trailing" id="pbl-tF-CZX"/>
+                                    <constraint firstItem="6kF-p7-8IK" firstAttribute="top" secondItem="U3V-YL-QeV" secondAttribute="top" id="zvS-dp-RoC"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="e3a-id-Ezm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="U3V-YL-QeV" secondAttribute="bottom" id="bff-hH-Ud2"/>
+                            <constraint firstItem="U3V-YL-QeV" firstAttribute="top" secondItem="e3a-id-Ezm" secondAttribute="top" id="o91-Yd-KWt"/>
+                            <constraint firstAttribute="trailing" secondItem="U3V-YL-QeV" secondAttribute="trailing" id="umY-IQ-WAB"/>
+                            <constraint firstItem="U3V-YL-QeV" firstAttribute="leading" secondItem="e3a-id-Ezm" secondAttribute="leading" id="vvR-5d-ZKx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add City" id="mEw-R9-hYI"/>
+                    <connections>
+                        <outlet property="searchBar" destination="6kF-p7-8IK" id="bo0-cJ-TOE"/>
+                        <outlet property="tableView" destination="ilZ-Us-lhB" id="BUf-03-ciM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8sl-Ce-5tD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1184.0579710144928" y="85.714285714285708"/>
         </scene>
     </scenes>
     <resources>

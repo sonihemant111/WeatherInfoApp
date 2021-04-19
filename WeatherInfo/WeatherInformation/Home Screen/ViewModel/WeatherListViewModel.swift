@@ -8,16 +8,17 @@
 import Foundation
 
 protocol WeatherListViewModelProtocol {
-    func didReceiveSuccessAt(_ indexPath: IndexPath)
+    func didReceiveWeatherDetailsAt(_ indexPath: IndexPath)
     func didFailWithError()
 }
 
 class WeatherListViewModel {
     var weatherViewModels = [WeatherViewModel]()
     var delegate: WeatherListViewModelProtocol?
+    let dbManager = DBManager()
     
     init() {
-        self.setupDefaultCities()
+        self.fetchSelectedCities()
     }
     
     // Method to add new weather view model
@@ -28,63 +29,41 @@ class WeatherListViewModel {
     // Update UI Once we fetch the weather data
     func updateUI(_ indexPath: IndexPath) {
         guard let delegate = self.delegate else { return }
-        delegate.didReceiveSuccessAt(indexPath)
+        delegate.didReceiveWeatherDetailsAt(indexPath)
+    }
+        
+    // Method to fetch selected cities
+    func fetchSelectedCities() {
+        let arrCity = dbManager.fetchAllSelectedCities()
+        
+        for i in 0...arrCity.count - 1 {
+            let weatherViewModel = WeatherViewModel()
+            weatherViewModel.weatherData.name = arrCity[i].0
+            weatherViewModel.weatherData.cityID = arrCity[i].1
+            weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
+            weatherViewModel.delegate = self
+            weatherViewModel.getWeatherData()
+            weatherViewModels.append(weatherViewModel)
+        }
     }
     
-    // As per the requirement we have to show below three cities weather data on Home Page
-    // Sydney, Melbourne and Brisbane
-    func setupDefaultCities() {
-        let weatherViewModelSydney = WeatherViewModel()
-        weatherViewModelSydney.weatherData.name = "Sydney"
-        weatherViewModels.append(weatherViewModelSydney)
-        weatherViewModelSydney.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelSydney.updateUI = { [weak self] (weatherViewModel, indexPath) in
-            guard let `self` = self else { return }
-            self.weatherViewModels[indexPath.row] = weatherViewModel
-            self.updateUI(indexPath)
+    // Method to refesh data
+    func refreshTemperatureData() {
+        for weatherViewModel in 0...weatherViewModels.count - 1 {
+            let viewModel = weatherViewModels[weatherViewModel]
+            viewModel.getWeatherData()
         }
-        weatherViewModelSydney.getWeatherData()
-
-
-        let weatherViewModelMelbourne = WeatherViewModel()
-        weatherViewModelMelbourne.weatherData.name = "Melbourne"
-        weatherViewModels.append(weatherViewModelMelbourne)
-        weatherViewModelMelbourne.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelMelbourne.updateUI = { [weak self] (weatherViewModel, indexPath) in
-            guard let `self` = self else { return }
-            self.weatherViewModels[indexPath.row] = weatherViewModel
-            self.updateUI(indexPath)
-        }
-        weatherViewModelMelbourne.getWeatherData()
-        
-        let weatherViewModelBrisbane = WeatherViewModel()
-        weatherViewModelBrisbane.weatherData.name = "Brisbane"
-        weatherViewModels.append(weatherViewModelBrisbane)
-        weatherViewModelBrisbane.indexPath = IndexPath(row: weatherViewModels.count - 1, section: 0)
-        weatherViewModelBrisbane.updateUI = { [weak self] (weatherViewModel, indexPath) in
-            guard let `self` = self else { return }
-            self.weatherViewModels[indexPath.row] = weatherViewModel
-            self.updateUI(indexPath)
-        }
-        weatherViewModelBrisbane.getWeatherData()
-
     }
     
     // Add new City to get weather
-    func addNewCity(_ cityName: String) {
+    func addNewCity(_ cityName: String, _ cityId: Int64) {
         let weatherViewModel = WeatherViewModel()
         weatherViewModel.weatherData.name = cityName
-        weatherViewModels.append(weatherViewModel)
-        weatherViewModel.indexPath = IndexPath(row: self.numberOfRows(0) - 1, section: 0)
-        weatherViewModel.updateUI = { [weak self] (weatherViewModel, indexPath) in
-            guard let `self` = self else { return }
-            print(indexPath.row)
-            print(self.weatherViewModels.count)
-            
-            self.weatherViewModels[indexPath.row - 1] = weatherViewModel
-            self.updateUI(indexPath)
-        }
+        weatherViewModel.weatherData.cityID = cityId
+        weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
+        weatherViewModel.delegate = self
         weatherViewModel.getWeatherData()
+        weatherViewModels.append(weatherViewModel)
     }
         
     // Method to get number of section
@@ -97,9 +76,24 @@ class WeatherListViewModel {
         return weatherViewModels.count
     }
     
-    // Method to get model(WeatherViewModel) on sprcific index
-    func modelAt(_ index: Int) -> WeatherViewModel {
+    // Method to get model(WeatherViewModel) on specific index
+    func itemAt(_ index: Int) -> WeatherViewModel {
         return weatherViewModels[index]
+    }
+    
+    // Method to remove item at specific index
+    func removeItemAt(_ index: Int) {
+        weatherViewModels.remove(at: index)
     }
 }
 
+
+extension WeatherListViewModel: WeatherViewModelProtocol {
+    func didReceiveTemperatureData(_ indexPath: IndexPath) {
+        self.updateUI(indexPath)
+    }
+    
+    func didFailWithError(_ indexPath: IndexPath) {
+        self.updateUI(indexPath)
+    }
+}

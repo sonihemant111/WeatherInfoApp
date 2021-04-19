@@ -6,15 +6,38 @@
 //
 
 import UIKit
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    let dbManager = DBManager()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        DBManager.printRealmFileUrl()
         // set default user settings if user has not set any yet
         UserDefaults.standard.saveDefaultUserSettings()
+        if !dbManager.checkIsAllCitiesDataAlreadySaved() {
+            self.fetchCityDataFromJSON()
+            dbManager.setDefaultCity()
+        }
+        
         return true
+    }
+    
+    // Method to parse city json and save in realm DB
+    func fetchCityDataFromJSON() {
+        if let path = Bundle.main.path(forResource: "cityList", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                if let cities = try? JSONDecoder().decode(List<CityModel>.self, from: data) {
+                    dbManager.saveCities(cities)
+                }
+            } catch {
+                // handle error
+                print(error.localizedDescription)
+            }
+        }
     }
     
     // MARK: UISceneSession Lifecycle
