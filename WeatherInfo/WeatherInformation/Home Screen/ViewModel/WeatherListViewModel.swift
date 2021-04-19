@@ -35,23 +35,26 @@ class WeatherListViewModel {
     // Method to fetch selected cities
     func fetchSelectedCities() {
         let arrCity = dbManager.fetchAllSelectedCities()
-        
-        for i in 0...arrCity.count - 1 {
-            let weatherViewModel = WeatherViewModel()
-            weatherViewModel.weatherData.name = arrCity[i].0
-            weatherViewModel.weatherData.cityID = arrCity[i].1
-            weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
-            weatherViewModel.delegate = self
-            weatherViewModel.getWeatherData()
-            weatherViewModels.append(weatherViewModel)
+        if arrCity.count > 0 {
+            for i in 0...arrCity.count - 1 {
+                let weatherViewModel = WeatherViewModel()
+                weatherViewModel.weatherData.name = arrCity[i].0
+                weatherViewModel.weatherData.cityID = arrCity[i].1
+                weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
+                weatherViewModel.delegate = self
+                weatherViewModel.getWeatherData()
+                weatherViewModels.append(weatherViewModel)
+            }
         }
     }
     
     // Method to refesh data
     func refreshTemperatureData() {
-        for weatherViewModel in 0...weatherViewModels.count - 1 {
-            let viewModel = weatherViewModels[weatherViewModel]
-            viewModel.getWeatherData()
+        if weatherViewModels.count > 0 {
+            for weatherViewModel in 0...weatherViewModels.count - 1 {
+                let viewModel = weatherViewModels[weatherViewModel]
+                viewModel.getWeatherData()
+            }
         }
     }
     

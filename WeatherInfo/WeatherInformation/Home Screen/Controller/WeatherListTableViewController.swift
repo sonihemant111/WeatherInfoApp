@@ -45,7 +45,11 @@ class WeatherListTableViewController: UITableViewController {
         if !self.checkInternetConnection() {
             return
         }
-        self.weatherListViewModel.refreshTemperatureData()
+        
+        if weatherListViewModel.numberOfRows(0) > 0 {
+            self.weatherListViewModel.refreshTemperatureData()
+        }
+        self.tableView.reloadData()
     }
     
     

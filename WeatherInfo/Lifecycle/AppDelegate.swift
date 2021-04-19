@@ -19,9 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.saveDefaultUserSettings()
         if !dbManager.checkIsAllCitiesDataAlreadySaved() {
             self.fetchCityDataFromJSON()
-            dbManager.setDefaultCity()
         }
-        
+        dbManager.setDefaultCity()
         return true
     }
     

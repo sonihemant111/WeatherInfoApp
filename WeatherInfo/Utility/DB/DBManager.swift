@@ -107,10 +107,13 @@ class DBManager {
             let predicate = NSPredicate(format: "isVisible=true")
             let selectedCityList = tasks.filter(predicate)
             var arrCity = [(String,Int64)]()
-            for i in 0...selectedCityList.count - 1 {
-                let cityData = (cityName: selectedCityList[i].cityName, cityID: selectedCityList[i].id)
-                arrCity.append(cityData)
+            if selectedCityList.count > 0 {
+                for i in 0...selectedCityList.count - 1 {
+                    let cityData = (cityName: selectedCityList[i].cityName, cityID: selectedCityList[i].id)
+                    arrCity.append(cityData)
+                }
             }
+            
             return arrCity
         } catch {
             print(error.localizedDescription)
