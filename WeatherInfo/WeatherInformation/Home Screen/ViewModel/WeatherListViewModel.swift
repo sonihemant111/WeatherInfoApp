@@ -9,7 +9,6 @@ import Foundation
 
 protocol WeatherListViewModelProtocol {
     func didReceiveWeatherDetailsAt(_ indexPath: IndexPath)
-    func didFailWithError()
 }
 
 class WeatherListViewModel {
@@ -32,7 +31,7 @@ class WeatherListViewModel {
         delegate.didReceiveWeatherDetailsAt(indexPath)
     }
         
-    // Method to fetch selected cities
+    // Method to fetch selected cities including default three cities
     func fetchSelectedCities() {
         let arrCity = dbManager.fetchAllSelectedCities()
         if arrCity.count > 0 {
@@ -90,7 +89,7 @@ class WeatherListViewModel {
     }
 }
 
-
+// MARK: WeatherViewModelProtocol
 extension WeatherListViewModel: WeatherViewModelProtocol {
     func didReceiveTemperatureData(_ indexPath: IndexPath) {
         self.updateUI(indexPath)

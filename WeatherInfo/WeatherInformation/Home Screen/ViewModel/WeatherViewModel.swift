@@ -30,16 +30,19 @@ class WeatherViewModel {
         
         if (AppNetworking.isConnected()) {
             WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: TemperatureScale.getUserSavedSettingTempUnitType()) { [weak self] (data, err)  in
-                guard let `self` = self, let weatherData = data, let delegate = self.delegate, let indexPath = self.indexPath else { return }
+                
+                guard let `self` = self else { return }
+                
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
                 } else {
+                    guard let weatherData = data, let delegate = self.delegate, let indexPath = self.indexPath else { return }
                     self.weatherData.isRefreshNeeded = false
-                    let cityID = self.weatherData.cityID
+                    let cityID: Int64 = self.weatherData.cityID ?? 0
                     self.weatherData = weatherData
                     self.weatherData.cityID = cityID
+                    delegate.didReceiveTemperatureData(indexPath)
                 }
-                delegate.didReceiveTemperatureData(indexPath)
             }
         } else {
             guard let delegate = self.delegate, let indexPath = self.indexPath else { return }
@@ -50,6 +53,10 @@ class WeatherViewModel {
     
     var cityName: String {
         return weatherData.name?.capitalized ?? ""
+    }
+    
+    var countryName: String {
+        return (weatherData.sys.country ?? "").capitalized 
     }
     
     var cityID: Int64 {

@@ -44,6 +44,11 @@ class WeatherDetailViewModel {
         return self.currentSelectedWeatherViewModel?.cityName.capitalized ?? ""
     }
     
+    // To get selected city's Country Name
+    var currentSelectedCountryName: String {
+        return self.currentSelectedWeatherViewModel?.countryName.capitalized ?? ""
+    }
+    
     // To get selected city's temp
     var currentSelectedCityTemperature: String {
         return (self.currentSelectedWeatherViewModel?.temperature ?? "")

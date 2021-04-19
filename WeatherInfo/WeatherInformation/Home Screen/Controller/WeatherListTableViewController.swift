@@ -23,21 +23,11 @@ class WeatherListTableViewController: UITableViewController {
         // Method to call API periodically
         Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(refreshWeatherData), userInfo: nil, repeats: true)
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         configureNavigationBar()
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    func addWeatherDidSave(_ weatherViewModel: WeatherViewModel) {
-        self.weatherListViewModel.addWeatherViewModel(weatherViewModel)
-        self.tableView.reloadData()
-    }
-    
+        
     // Method to refresh weather data
     @objc func refreshWeatherData() {
         self.refreshControl?.endRefreshing()
@@ -51,7 +41,6 @@ class WeatherListTableViewController: UITableViewController {
         }
         self.tableView.reloadData()
     }
-    
     
     // Method to setup Refresh controller
     func configureRefreshController() {
@@ -68,14 +57,14 @@ class WeatherListTableViewController: UITableViewController {
     
     // Method to redirect user to weatherDetail screen
     @objc func redirectToAddMoreCityScreen() {
-        let addMoreCityVC: AddMoreCityViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "AddMoreCityViewController") as! AddMoreCityViewController
+        let addMoreCityVC: AddMoreCityViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddMoreCityViewController") as! AddMoreCityViewController
         addMoreCityVC.delegate = self
         self.navigationController?.pushViewController(addMoreCityVC, animated: true)
     }
     
     // Method to redirect user to settimgs screen
     @objc func redirectToSettingsScreen() {
-        let settingsVC: SettingsViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        let settingsVC: SettingsViewController = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
         settingsVC.delegate = self
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
@@ -136,9 +125,10 @@ class WeatherListTableViewController: UITableViewController {
         cell.configureCell(weatherViewModel)
         cell.didTapOnRefreshButton = { (indexPath) in
             // check internet connection before calling API
-            self.checkInternetConnection()
-            // call API again to fetch weather data
-            weatherViewModel.getWeatherData()
+            if self.checkInternetConnection() {
+                // call API again to fetch weather data
+                weatherViewModel.getWeatherData()
+            }
         }
         return cell
     }
@@ -154,7 +144,7 @@ class WeatherListTableViewController: UITableViewController {
     
     // Method to redirect user to weatherDetail screen
     func redirectToWeatherDetailScreen(_ indexPath: IndexPath) {
-        let weatherDetailVC: WeatherDetailViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
+        let weatherDetailVC: WeatherDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
         let weatherModel = self.weatherListViewModel.itemAt(indexPath.row)
         weatherDetailVC.currentSelectedWeatherViewModel = weatherModel
         self.navigationController?.pushViewController(weatherDetailVC, animated: true)
@@ -174,7 +164,6 @@ class WeatherListTableViewController: UITableViewController {
             self.refreshWeatherData()
         }
         let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
-
         return swipeActions
     }
 }
@@ -184,15 +173,8 @@ extension WeatherListTableViewController: WeatherListViewModelProtocol {
     func didReceiveWeatherDetailsAt(_ indexPath: IndexPath) {
         // Update UI
         DispatchQueue.main.async {
-//            self.tableView.beginUpdates()
-//            self.tableView.reloadRows(at: [indexPath], with: .fade)
-//            self.tableView.endUpdates()
             self.tableView.reloadData()
         }
-    }
-    
-    func didFailWithError() {
-        // show toast message
     }
 }
 

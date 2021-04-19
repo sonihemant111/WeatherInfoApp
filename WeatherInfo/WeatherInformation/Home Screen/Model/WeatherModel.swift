@@ -17,7 +17,7 @@ struct WeatherModel: Codable {
     var cityID: Int64?
     var name: String?
     var main = Main()
-    let sys = Sys()
+    var sys = Sys()
     let timezone: Int64 = 0
     var dt_txt: String?
     var weather = [Weather]()
@@ -29,9 +29,9 @@ struct WeatherModel: Codable {
 }
 
 struct Sys: Codable {
-    var country: String = ""
-    var sunrise: Int = 0
-    var sunset: Int = 0
+    var country: String?
+    var sunrise: Int?
+    var sunset: Int?
 }
 
 struct Main: Codable {

@@ -38,7 +38,7 @@ class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, U
     
     // func display Current selected city's Weather Data
     func displayCurentSelectedCityData() {
-        self.cityAndCountryNameLabel.text = viewModel.currentSelectedCityName
+        self.cityAndCountryNameLabel.text = viewModel.currentSelectedCityName + ", " + viewModel.currentSelectedCountryName
         self.temperatureLabel.text = viewModel.currentSelectedCityTemperature
         self.dateLabel.text = viewModel.currentDate
         self.minimumTempLabel.text = viewModel.currentSelectedCityMinTemp
