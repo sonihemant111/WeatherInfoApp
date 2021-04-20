@@ -35,6 +35,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="WeatherListTableView"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="dataSource" destination="oeg-MO-aBl" id="HfC-nl-3dY"/>
                             <outlet property="delegate" destination="oeg-MO-aBl" id="vTZ-X0-TSf"/>
@@ -43,9 +46,15 @@
                     <navigationItem key="navigationItem" title="Weather" largeTitleDisplayMode="always" id="0d6-p6-kjG">
                         <barButtonItem key="leftBarButtonItem" image="SettingsIcon" id="UK6-v4-I65">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="settingButton"/>
+                            </userDefinedRuntimeAttributes>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="RcC-ch-68S">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="addButton"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <segue destination="pDA-kj-529" kind="presentation" id="EYa-4G-VmF"/>
                             </connections>
@@ -82,6 +91,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jfj-4i-UnL">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="settingsTable"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="UeD-D1-P7y" id="WBt-SF-Hl0"/>
                                     <outlet property="delegate" destination="UeD-D1-P7y" id="ens-al-1yD"/>
@@ -263,9 +275,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3V-YL-QeV">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" placeholder="Search city by name or location" translatesAutoresizingMaskIntoConstraints="NO" id="6kF-p7-8IK">
+                                    <searchBar contentMode="redraw" placeholder="Search city by name" translatesAutoresizingMaskIntoConstraints="NO" id="6kF-p7-8IK">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="searchBar"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="delegate" destination="p35-AK-DJQ" id="iCy-V6-vfE"/>
                                         </connections>
@@ -273,6 +288,9 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ilZ-Us-lhB">
                                         <rect key="frame" x="0.0" y="56" width="414" height="796"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="addCityTableView"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="p35-AK-DJQ" id="UzT-Qt-JDH"/>
                                             <outlet property="delegate" destination="p35-AK-DJQ" id="3Il-i1-ZN5"/>
