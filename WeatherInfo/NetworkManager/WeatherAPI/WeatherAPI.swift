@@ -46,7 +46,7 @@ class WeatherAPI: NetworkManagerProtocol {
             }
             
             do {
-                guard let jsonData = try! JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
+                guard let jsonData = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
                     print("Error trying to convert data to JSON")
                     return
                 }

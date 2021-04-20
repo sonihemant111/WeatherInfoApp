@@ -9,7 +9,7 @@ import Foundation
 
 protocol WeatherViewModelProtocol {
     func didReceiveTemperatureData(_ indexPath: IndexPath)
-    func didFailWithError(_ indexPath: IndexPath)
+    func didFailWithError(_ indexPath: IndexPath, _ err: Error)
 }
 
 class WeatherViewModel {
@@ -31,12 +31,13 @@ class WeatherViewModel {
         if (AppNetworking.isConnected()) {
             WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: TemperatureScale.getUserSavedSettingTempUnitType()) { [weak self] (data, err)  in
                 
-                guard let `self` = self else { return }
+                guard let `self` = self, let delegate = self.delegate, let indexPath = self.indexPath else { return }
                 
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
+                    delegate.didFailWithError(indexPath, WeatherInfoError.noDataFound)
                 } else {
-                    guard let weatherData = data, let delegate = self.delegate, let indexPath = self.indexPath else { return }
+                    guard let weatherData = data else { return }
                     self.weatherData.isRefreshNeeded = false
                     let cityID: Int64 = self.weatherData.cityID ?? 0
                     self.weatherData = weatherData
@@ -47,7 +48,7 @@ class WeatherViewModel {
         } else {
             guard let delegate = self.delegate, let indexPath = self.indexPath else { return }
             self.weatherData.isRefreshNeeded = true
-            delegate.didFailWithError(indexPath)
+            delegate.didFailWithError(indexPath, WeatherInfoError.noInternetConnection)
         }
     }
     

@@ -18,6 +18,7 @@ class WeatherListTableViewController: UITableViewController {
         super.viewDidLoad()
         self.registerNib()
         self.weatherListViewModel.delegate = self
+        self.weatherListViewModel.fetchSelectedCities()
         self.configureRefreshController()
         self.checkInternetConnection()
         // Method to call API periodically

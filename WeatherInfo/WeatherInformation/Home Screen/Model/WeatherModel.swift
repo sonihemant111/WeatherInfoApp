@@ -7,7 +7,7 @@
 
 import Foundation
  
-enum WeatherInfoError {
+enum WeatherInfoError: Error {
     case noDataFound
     case noInternetConnection
 }

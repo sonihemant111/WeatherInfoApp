@@ -10,24 +10,59 @@ import XCTest
 
 class WeatherInfoTests: XCTestCase {
 
+    var weatherListViewModel: WeatherListViewModel?
+    var expectation = XCTestExpectation()
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        weatherListViewModel = WeatherListViewModel()
+        
+        let urlManager = URLManager()
+        let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.fahrenheit.rawValue))
+
+        URLProtocolMock.testURLs = [url: "WeatherData"]
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [URLProtocolMock.self]
+        let session = URLSession(configuration: config)
+        NetworkManager.main.setMockSession(session: session)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        weatherListViewModel = nil
+        URLProtocolMock.clearMock()
+    }
+    
+    func testGetCityWeather() throws {
+        // prepare weatherViewModel
+        let weatherViewModel = WeatherViewModel()
+        var weatherData = WeatherModel()
+        weatherData.cityID = 4163971
+        weatherData.name = "Jodhpur"
+        weatherViewModel.weatherData = weatherData
+        weatherViewModel.indexPath = IndexPath(row: 0, section: 0)
+        weatherViewModel.delegate = self
+        weatherListViewModel?.weatherViewModels.append(weatherViewModel)
+
+        expectation = self.expectation(description: "Success Test")
+        weatherViewModel.getWeatherData()
+        waitForExpectations(timeout: 50)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+}
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+// MARK: WeatherViewModelProtocol
+extension WeatherInfoTests: WeatherViewModelProtocol {
+    func didFailWithError(_ indexPath: IndexPath, _ err: Error) {
+        print(err.localizedDescription)
+        expectation.fulfill()
     }
-
+    
+    func didReceiveTemperatureData(_ indexPath: IndexPath) {
+        let weatherViewModel = weatherListViewModel?.weatherViewModels[indexPath.row]
+        XCTAssertNotEqual(weatherViewModel?.temperature, "", "temperature should not be empty")
+        XCTAssertEqual(weatherViewModel?.cityName, "Jodhpur", "city name should be Jodhpur")
+        XCTAssertEqual(weatherViewModel?.weatherData.sys.country, "IN", "Country name must be IN")
+        XCTAssertEqual(weatherViewModel?.cityID, 4163971,"city ID must be 4163971")
+        expectation.fulfill()
+    }
 }

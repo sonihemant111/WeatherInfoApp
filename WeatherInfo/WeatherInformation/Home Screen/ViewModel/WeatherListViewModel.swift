@@ -16,10 +16,6 @@ class WeatherListViewModel {
     var delegate: WeatherListViewModelProtocol?
     let dbManager = DBManager()
     
-    init() {
-        self.fetchSelectedCities()
-    }
-    
     // Method to add new weather view model
     func addWeatherViewModel(_ weatherViewModel: WeatherViewModel) {
         weatherViewModels.append(weatherViewModel)
@@ -91,11 +87,11 @@ class WeatherListViewModel {
 
 // MARK: WeatherViewModelProtocol
 extension WeatherListViewModel: WeatherViewModelProtocol {
-    func didReceiveTemperatureData(_ indexPath: IndexPath) {
+    func didFailWithError(_ indexPath: IndexPath, _ err: Error) {
         self.updateUI(indexPath)
     }
     
-    func didFailWithError(_ indexPath: IndexPath) {
+    func didReceiveTemperatureData(_ indexPath: IndexPath) {
         self.updateUI(indexPath)
     }
 }

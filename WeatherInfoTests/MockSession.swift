@@ -29,9 +29,11 @@ class URLProtocolMock: URLProtocol {
                 self.client?.urlProtocol(self, didFailWithError: error)
                     return
             }
-            if let fileName = URLProtocolMock.testURLs[url] {
+            print(url)
+            print(URLProtocolMock.testURLs[url])
+//            if let fileName = "WeatherData" {
                 let bundle = Bundle(for: type(of: self))
-                let urlPath = bundle.path(forResource: fileName, ofType: "json")
+                let urlPath = bundle.path(forResource: "WeatherData", ofType: "json")
                 guard let path = urlPath else { return }
                 do {
                     let data = try Data(contentsOf: URL(fileURLWithPath: path))
@@ -39,7 +41,7 @@ class URLProtocolMock: URLProtocol {
                 } catch let err {
                     self.client?.urlProtocol(self, didFailWithError: err)
                 }
-            }
+//            }
         }
         self.client?.urlProtocolDidFinishLoading(self)
     }

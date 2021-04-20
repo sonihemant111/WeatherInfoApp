@@ -15,17 +15,6 @@ class DBManagerTest: XCTestCase {
     
     override func setUpWithError() throws {
         dbManager.deleteAll()
-        let urlManager = URLManager()
-        let url1 = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "4163971", tempUnit: TemperatureScale.fahrenheit.rawValue))
-        let url2 = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "2147714", tempUnit: TemperatureScale.fahrenheit.rawValue))
-        let url3 = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "2174003", tempUnit: TemperatureScale.fahrenheit.rawValue))
-
-        URLProtocolMock.testURLs = [url1: "weatherData",url2: "weatherData",url3: "weatherData"]
-        
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [URLProtocolMock.self]
-        let session = URLSession(configuration: config)
-        NetworkManager.main.setMockSession(session: session)
     }
 
     override func tearDownWithError() throws {
