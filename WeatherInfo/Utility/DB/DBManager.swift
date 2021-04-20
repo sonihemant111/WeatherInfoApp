@@ -75,6 +75,18 @@ class DBManager {
         return false
     }
     
+    // Method to save city
+    func saveCity(city: List<CityModel>) {
+        do {
+            let localRealm = try Realm()
+            localRealm.beginWrite()
+            localRealm.add(city)
+            try localRealm.commitWrite()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     // Method to fetch cityData from realm DB
     func fetchCity(_ searchKeyword: String, completionHandler: @escaping ((Array<CityModel>) -> Void)) {
         do {
