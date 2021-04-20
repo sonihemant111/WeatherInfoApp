@@ -18,14 +18,9 @@ class WeatherAPI: NetworkManagerProtocol {
             print("Error: while sanitizing city name")
             return
         }
-        
-        guard let key = getAPIKey() else {
-            print("Error: could not extract API key")
-            return
-        }
-        
+    
         // Set up the URL request
-        let endpointString = URLManager.init().fetchWeather + "\(sanitizedCityName)&units=\(tempScale.rawValue)&APPID=\(key)"
+        let endpointString = (URLManager.init().getURLToFetchWeatherOfCity(city: sanitizedCityName, tempUnit: tempScale.rawValue))
         
         print("final request string:", endpointString)
         
@@ -67,23 +62,12 @@ class WeatherAPI: NetworkManagerProtocol {
             }
         }
     }
-    
-    // Method to get weather API Key
-    func getAPIKey() -> String? {
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
-           let dictionary = NSDictionary(contentsOfFile: path) as? [String: Any], let key = dictionary["WeatherAPIKey"] as? String {
-            return key
-        }
-        return nil
-    }
-    
+
     // Method to fetch forcast of specific city
     func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ()) {
-        guard let key = getAPIKey() else { return }
-        
         // remove diacritics string example één to een from cityname
-        let formattedCity = (city.folding(options: .diacriticInsensitive, locale: .current)).replacingOccurrences(of: " ", with: "+")
-        let API_URL = URLManager.init().fetchForcastInfo + "\(formattedCity)&appid=" + key
+        let formattedCity = (city.folding(options: .diacriticInsensitive, locale: .current)).replacingOccurrences(of: " ", with: "+").stripped
+        let API_URL = URLManager.init().getURLToFetchForecastOfCity(city: formattedCity)
         
         var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
         var secondDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
@@ -102,7 +86,7 @@ class WeatherAPI: NetworkManagerProtocol {
             guard let data = data else { return }
             do {
                 
-                let forecastWeather = try JSONDecoder().decode(ForecastModel.self, from: data)
+                let forecastWeather = try! JSONDecoder().decode(ForecastModel.self, from: data)
                 
                 var forecastmodelArray : [ForecastTemperature] = []
                 var fetchedData : [WeatherInfo] = [] //Just for loop completion

@@ -30,8 +30,6 @@ struct WeatherModel: Codable {
 
 struct Sys: Codable {
     var country: String?
-    var sunrise: Int?
-    var sunset: Int?
 }
 
 struct Main: Codable {
