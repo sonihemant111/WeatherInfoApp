@@ -17,9 +17,9 @@ class WeatherInfoTests: XCTestCase {
         weatherListViewModel = WeatherListViewModel()
         
         let urlManager = URLManager()
-        let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.fahrenheit.rawValue))
+        let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
 
-        URLProtocolMock.testURLs = [url: "WeatherData"]
+        URLProtocolMock.testURLs = [url! : "WeatherData"]
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)

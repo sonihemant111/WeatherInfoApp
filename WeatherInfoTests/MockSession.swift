@@ -10,7 +10,7 @@ import Foundation
 class URLProtocolMock: URLProtocol {
     
     static var httpError:Error?
-    static var testURLs = [URL?: String]()
+    static var testURLs = Dictionary<URL, String>()
     
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -29,11 +29,9 @@ class URLProtocolMock: URLProtocol {
                 self.client?.urlProtocol(self, didFailWithError: error)
                     return
             }
-            print(url)
-            print(URLProtocolMock.testURLs[url])
-//            if let fileName = "WeatherData" {
+            if let fileName = URLProtocolMock.testURLs[url] {
                 let bundle = Bundle(for: type(of: self))
-                let urlPath = bundle.path(forResource: "WeatherData", ofType: "json")
+                let urlPath = bundle.path(forResource: fileName, ofType: "json")
                 guard let path = urlPath else { return }
                 do {
                     let data = try Data(contentsOf: URL(fileURLWithPath: path))
@@ -41,7 +39,7 @@ class URLProtocolMock: URLProtocol {
                 } catch let err {
                     self.client?.urlProtocol(self, didFailWithError: err)
                 }
-//            }
+            }
         }
         self.client?.urlProtocolDidFinishLoading(self)
     }
