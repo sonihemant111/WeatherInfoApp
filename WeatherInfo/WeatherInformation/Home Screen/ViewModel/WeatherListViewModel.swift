@@ -87,7 +87,7 @@ class WeatherListViewModel {
 
 // MARK: WeatherViewModelProtocol
 extension WeatherListViewModel: WeatherViewModelProtocol {
-    func didFailWithError(_ indexPath: IndexPath, _ err: Error) {
+    func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError) {
         self.updateUI(indexPath)
     }
     

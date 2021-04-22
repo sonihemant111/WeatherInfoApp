@@ -9,5 +9,5 @@ import Foundation
 
 protocol NetworkManagerProtocol {
     func fetchCurrentWeather(cityName: String, tempScale: TemperatureScale, completion: @escaping (WeatherModel?,  WeatherInfoError?) -> ())
-    func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ())
+    func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]?, WeatherInfoError?) -> ())
 }

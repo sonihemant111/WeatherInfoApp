@@ -52,8 +52,8 @@ class WeatherInfoTests: XCTestCase {
 
 // MARK: WeatherViewModelProtocol
 extension WeatherInfoTests: WeatherViewModelProtocol {
-    func didFailWithError(_ indexPath: IndexPath, _ err: Error) {
-        print(err.localizedDescription)
+    func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError) {
+        print(error.rawValue)
         expectation.fulfill()
     }
     

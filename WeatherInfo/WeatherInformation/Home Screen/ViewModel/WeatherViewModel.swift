@@ -9,7 +9,7 @@ import Foundation
 
 protocol WeatherViewModelProtocol {
     func didReceiveTemperatureData(_ indexPath: IndexPath)
-    func didFailWithError(_ indexPath: IndexPath, _ err: Error)
+    func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError)
 }
 
 class WeatherViewModel {

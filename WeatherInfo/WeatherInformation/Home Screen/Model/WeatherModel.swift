@@ -7,9 +7,11 @@
 
 import Foundation
  
-enum WeatherInfoError: Error {
-    case noDataFound
-    case noInternetConnection
+enum WeatherInfoError: String {
+    case noDataFound = "No Data Found."
+    case noInternetConnection = "Please check your internet connection."
+    case forecastDataNotAvailable = "Forecast Data is not available"
+    case someWentWrong
 }
 
 struct WeatherModel: Codable {
@@ -49,7 +51,7 @@ struct Weather: Codable {
 }
 
 struct ForecastModel: Codable {
-    var list: [WeatherModel]
+    var list = [WeatherModel]()
     let city: City
 }
 

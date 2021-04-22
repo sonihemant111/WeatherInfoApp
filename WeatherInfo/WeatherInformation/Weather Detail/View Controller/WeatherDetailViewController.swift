@@ -36,6 +36,14 @@ class WeatherDetailViewController: UIViewController, UICollectionViewDelegate, U
         self.title = viewModel.currentSelectedCityName + ", " + viewModel.currentSelectedCountryName
     }
     
+    // Show toast message
+    func showToast(_ message: String) {
+        // Show a Toast message
+        DispatchQueue.main.async {
+            self.view.makeToast(message, duration: 1.0, position: .center)
+        }
+    }
+    
     // func display Current selected city's Weather Data
     func displayCurentSelectedCityData() {
         self.temperatureLabel.text = viewModel.currentSelectedCityTemperature
@@ -100,7 +108,8 @@ extension WeatherDetailViewController: WeatherDetailViewModelProtocol {
         }
     }
     
-    func didAPIFailWithError() {
+    func didAPIFailWithError(_ error: WeatherInfoError) {
         // Show toast message
+        self.showToast(error.rawValue)
     }
 }

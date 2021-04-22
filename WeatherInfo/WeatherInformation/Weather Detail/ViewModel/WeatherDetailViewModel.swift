@@ -9,7 +9,7 @@ import Foundation
 
 protocol WeatherDetailViewModelProtocol {
     func didReceiveAPISuccess()
-    func didAPIFailWithError()
+    func didAPIFailWithError(_ error: WeatherInfoError)
 }
 
 class WeatherDetailViewModel {
@@ -20,11 +20,16 @@ class WeatherDetailViewModel {
     
     // Method to call API to Fetch currect selected city's Forcast
     func fetchForcastData() {
-        WeatherAPI.shared.fetchNextFiveWeatherForecast(city: currentSelectedWeatherViewModel?.cityName ?? "") { [weak self] (forecast) in
-            guard let `self` = self else { return }
-            self.forecastData = forecast
-            if let delegate = self.viewModelDelegate {
-                delegate.didReceiveAPISuccess()
+        WeatherAPI.shared.fetchNextFiveWeatherForecast(city: currentSelectedWeatherViewModel?.cityName ?? "") { [weak self] (forecast, error) in
+            
+            guard let `self` = self, let delegate = self.viewModelDelegate  else { return }
+            if let err = error {
+                delegate.didAPIFailWithError(err)
+            } else {
+                if let forecastData = forecast {
+                    self.forecastData = forecastData
+                    delegate.didReceiveAPISuccess()
+                }
             }
         }
     }

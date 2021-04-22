@@ -11,14 +11,15 @@ class WeatherAPI: NetworkManagerProtocol {
     
     static let shared = WeatherAPI()
     private let request = RequestManager()
-    
-    
+
+    // Method to fetch weather of specific city
     func fetchCurrentWeather(cityName: String, tempScale: TemperatureScale, completion: @escaping (WeatherModel?, WeatherInfoError?) -> ()) {
         guard let sanitizedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
             print("Error: while sanitizing city name")
+            completion(nil, .someWentWrong)
             return
         }
-    
+        
         // Set up the URL request
         let endpointString = (URLManager.init().getURLToFetchWeatherOfCity(city: sanitizedCityName, tempUnit: tempScale.rawValue))
         
@@ -26,6 +27,7 @@ class WeatherAPI: NetworkManagerProtocol {
         
         guard let url = URL(string: endpointString) else {
             print("error: URL NOT valid")
+            completion(nil, .someWentWrong)
             return
         }
         print("final request string:", endpointString)
@@ -34,7 +36,7 @@ class WeatherAPI: NetworkManagerProtocol {
             // Check for any errors
             if let error = error {
                 print("error calling GET on current weather:", error.localizedDescription)
-                completion(nil, .noDataFound)
+                completion(nil, .someWentWrong)
                 return
             }
             
@@ -42,12 +44,14 @@ class WeatherAPI: NetworkManagerProtocol {
             guard let responseData = data else {
                 print("Error: did not receive data")
                 completion(nil, .noDataFound)
+                completion(nil, .noDataFound)
                 return
             }
             
             do {
                 guard let jsonData = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
                     print("Error trying to convert data to JSON")
+                    completion(nil, .noDataFound)
                     return
                 }
                 print(jsonData)
@@ -62,9 +66,9 @@ class WeatherAPI: NetworkManagerProtocol {
             }
         }
     }
-
+    
     // Method to fetch forcast of specific city
-    func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]) -> ()) {
+    func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]?, WeatherInfoError?) -> ()) {
         // remove diacritics string example één to een from cityname
         let formattedCity = (city.folding(options: .diacriticInsensitive, locale: .current)).replacingOccurrences(of: " ", with: "+").stripped
         let API_URL = URLManager.init().getURLToFetchForecastOfCity(city: formattedCity)
@@ -82,11 +86,18 @@ class WeatherAPI: NetworkManagerProtocol {
         }
         let urlRequest = URLRequest(url: url)
         URLSession.shared.dataTask(with: urlRequest) { [weak self] (data, response, error) in
-            guard self != nil else { return }
-            guard let data = data else { return }
+            guard self != nil else {
+                completion(nil, .someWentWrong)
+                return
+            }
+            
+            guard let data = data else {
+                completion(nil, .noDataFound)
+                return
+            }
             do {
                 
-                let forecastWeather = try! JSONDecoder().decode(ForecastModel.self, from: data)
+                let forecastWeather = try JSONDecoder().decode(ForecastModel.self, from: data)
                 
                 var forecastmodelArray : [ForecastTemperature] = []
                 var fetchedData : [WeatherInfo] = [] //Just for loop completion
@@ -99,7 +110,6 @@ class WeatherAPI: NetworkManagerProtocol {
                 var sixthDayForecast : [WeatherInfo] = []
                 var sevenDayForecast : [WeatherInfo] = []
                 
-                print("Total data:", forecastWeather.list.count)
                 var totalData = forecastWeather.list.count //Should be 40 all the time
                 
                 for day in 0...forecastWeather.list.count - 1 {
@@ -136,24 +146,20 @@ class WeatherAPI: NetworkManagerProtocol {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         currentDayForecast.append(info)
                         currentDayTemp = ForecastTemperature(weekDay: currentweekdaysymbol, hourlyForecast: currentDayForecast)
-                        print("1")
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 1) {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         secondDayForecast.append(info)
                         secondDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: secondDayForecast)
-                        print("2")
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 2) {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         thirddayDayForecast.append(info)
-                        print("3")
                         thirdDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: thirddayDayForecast)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 3) {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         fourthDayDayForecast.append(info)
-                        print("4")
                         fourthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fourthDayDayForecast)
                         fetchedData.append(info)
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 4){
@@ -161,19 +167,16 @@ class WeatherAPI: NetworkManagerProtocol {
                         fifthDayForecast.append(info)
                         fifthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: fifthDayForecast)
                         fetchedData.append(info)
-                        print("5")
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 5) {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         sixthDayForecast.append(info)
                         sixthDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: sixthDayForecast)
                         fetchedData.append(info)
-                        print("6")
                     }else if weekdaycomponent == currentWeekDay.incrementWeekDays(by: 6) {
                         let info = WeatherInfo(temp: mainTemp ?? 0.0, min_temp: minTemp ?? 0.0, max_temp: maxTemp ?? 0.0, description: descriptionTemp ?? "", icon: icon ?? "", time: time)
                         sevenDayForecast.append(info)
                         seventhDayTemp = ForecastTemperature(weekDay: weekday, hourlyForecast: sevenDayForecast)
                         fetchedData.append(info)
-                        print("7")
                     }
                     
                     
@@ -208,15 +211,14 @@ class WeatherAPI: NetworkManagerProtocol {
                         }
                         
                         if forecastmodelArray.count <= 6 {
-                            completion(forecastmodelArray)
+                            completion(forecastmodelArray, nil)
                         }
                         
                     }
                 }
             } catch {
-                print(error)
+                completion(nil, .forecastDataNotAvailable)
             }
-            
         }.resume()
     }
 }

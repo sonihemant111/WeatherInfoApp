@@ -75,7 +75,7 @@ class WeatherListTableViewController: UITableViewController {
     func checkInternetConnection(showToast: Bool = true) -> Bool {
         if !AppNetworking.isConnected() {
             if showToast {
-                self.view.makeToast(StringConstants.noInternetConnectionMessage, duration: 1.0, position: .center)
+                self.view.makeToast(WeatherInfoError.noInternetConnection.rawValue, duration: 1.0, position: .center)
             }
             return false
         } else {
@@ -86,7 +86,9 @@ class WeatherListTableViewController: UITableViewController {
     // Show toast message
     func showToast(_ message: String) {
         // Show a Toast message
-        self.view.makeToast(message, duration: 1.0, position: .center)
+        DispatchQueue.main.async {
+            self.view.makeToast(message, duration: 1.0, position: .center)
+        }
     }
     
     // Method to configure Navigation Bar
