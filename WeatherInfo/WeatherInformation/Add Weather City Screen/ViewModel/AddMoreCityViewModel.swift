@@ -57,7 +57,6 @@ class AddMoreCityViewModel {
     // Method to return item at specfic index
     func itemAt(_ index: Int) -> CityModel {
         let cityModel = addMoreCityViewModels[index]
-//        cityModel.cityName = cityModel.cityName.capitalized
         return cityModel
     }
 }

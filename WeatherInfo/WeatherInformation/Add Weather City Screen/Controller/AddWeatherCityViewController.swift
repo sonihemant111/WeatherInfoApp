@@ -17,7 +17,7 @@ class AddMoreCityViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     private var pendingRequestWorkItem: DispatchWorkItem?
-    private var viewModel = AddMoreCityViewModel()
+    var viewModel = AddMoreCityViewModel()
     var delegate: AddMoreCityViewControllerProtocol?
     
     override func viewDidLoad() {

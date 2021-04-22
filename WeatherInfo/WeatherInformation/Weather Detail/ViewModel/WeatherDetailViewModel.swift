@@ -12,6 +12,7 @@ protocol WeatherDetailViewModelProtocol {
     func didAPIFailWithError(_ error: WeatherInfoError)
 }
 
+
 class WeatherDetailViewModel {
     
     var forecastData: [ForecastTemperature] = []
@@ -39,7 +40,7 @@ class WeatherDetailViewModel {
         return forecastData.count
     }
     
-    // Method to return
+    // Method to return ForecastTemperature
     func itemAt(index: Int) -> ForecastTemperature {
         return forecastData[index]
     }

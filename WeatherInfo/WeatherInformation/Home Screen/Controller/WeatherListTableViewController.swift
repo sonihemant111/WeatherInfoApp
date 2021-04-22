@@ -11,7 +11,7 @@ import Toast_Swift
 
 class WeatherListTableViewController: UITableViewController {
     
-    private var weatherListViewModel = WeatherListViewModel()
+    var weatherListViewModel = WeatherListViewModel()
     private var dbManager = DBManager()
     
     override func viewDidLoad() {

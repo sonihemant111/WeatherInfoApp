@@ -11,8 +11,7 @@ class WeatherAPI: NetworkManagerProtocol {
     
     static let shared = WeatherAPI()
     private let request = RequestManager()
-
-    // Method to fetch weather of specific city
+    
     func fetchCurrentWeather(cityName: String, tempScale: TemperatureScale, completion: @escaping (WeatherModel?, WeatherInfoError?) -> ()) {
         guard let sanitizedCityName = cityName.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
             print("Error: while sanitizing city name")
