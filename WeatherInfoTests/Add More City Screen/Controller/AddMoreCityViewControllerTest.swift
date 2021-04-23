@@ -1,28 +1,29 @@
 //
-//  SettingsViewControllerTest.swift
+//  AddMoreCityViewControllerTest.swift
 //  WeatherInfoTests
 //
-//  Created by Hemant Soni on 22/04/21.
+//  Created by Hemant Soni on 23/04/21.
 //
 
 import XCTest
 @testable import WeatherInfo
 
-class SettingsViewControllerTest: XCTestCase {
+class AddMoreCityViewControllerTest: XCTestCase {
     var storyboard: UIStoryboard!
-    var sut: SettingsViewController!
+    var sut: AddMoreCityViewController!
+    var viewModel: AddMoreCityViewModel?
     
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         storyboard = UIStoryboard(name: "WeatherInfo", bundle: nil)
-        sut = storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as? SettingsViewController
+        sut = storyboard.instantiateViewController(withIdentifier: "AddMoreCityViewController") as? AddMoreCityViewController
         sut.loadViewIfNeeded()
+        viewModel = sut.viewModel
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         storyboard = nil
         sut = nil
+        viewModel = nil
     }
     
     func testThatViewLoads() {
@@ -36,11 +37,10 @@ class SettingsViewControllerTest: XCTestCase {
     func testThatTableViewLoads() {
         XCTAssertNotNil(self.sut.tableView, "TableView is not connected to an IBOutlet")
     }
-    
 }
 
 //Mark: UITableView tests
-extension SettingsViewControllerTest {
+extension AddMoreCityViewControllerTest {
     func testThatViewConformsToUITableViewDataDelegate() {
         XCTAssertTrue(self.sut.conforms(to: UITableViewDelegate.self), "View does not conform to UITableView delegate protocol")
     }

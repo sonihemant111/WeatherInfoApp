@@ -1,18 +1,21 @@
 //
-//  WeatherViewModelTest.swift
+//  WeatherInfoTests.swift
 //  WeatherInfoTests
 //
-//  Created by Hemant Soni on 22/04/21.
+//  Created by Hemant Soni on 13/04/21.
 //
 
 import XCTest
 @testable import WeatherInfo
 
-class WeatherViewModelTest: XCTestCase {
-    var expectation = XCTestExpectation()
-    var weatherViewModel = WeatherViewModel()
+class WeatherListViewModelTest: XCTestCase {
+
+    private var weatherListViewModel: WeatherListViewModel?
+    private var expectation = XCTestExpectation()
     
     override func setUpWithError() throws {
+        weatherListViewModel = WeatherListViewModel()
+        
         let urlManager = URLManager()
         let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
 
@@ -22,20 +25,23 @@ class WeatherViewModelTest: XCTestCase {
         let session = URLSession(configuration: config)
         NetworkManager.main.setMockSession(session: session)
     }
-    
+
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        weatherListViewModel = nil
         URLProtocolMock.clearMock()
     }
     
     func testGetCityWeather() throws {
         // prepare weatherViewModel
+        let weatherViewModel = WeatherViewModel()
         var weatherData = WeatherModel()
         weatherData.cityID = 4163971
         weatherData.name = "Jodhpur"
         weatherViewModel.weatherData = weatherData
         weatherViewModel.indexPath = IndexPath(row: 0, section: 0)
         weatherViewModel.delegate = self
+        weatherListViewModel?.weatherViewModels.append(weatherViewModel)
 
         expectation = self.expectation(description: "Success Test")
         weatherViewModel.getWeatherData()
@@ -43,30 +49,19 @@ class WeatherViewModelTest: XCTestCase {
     }
 }
 
-extension WeatherViewModelTest: WeatherViewModelProtocol {
+// MARK: WeatherViewModelProtocol
+extension WeatherListViewModelTest: WeatherViewModelProtocol {
     func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError) {
         print(error.rawValue)
         expectation.fulfill()
     }
     
     func didReceiveTemperatureData(_ indexPath: IndexPath) {
-        XCTAssertNotEqual(weatherViewModel.temperature, "", "temperature should not be empty")
-        XCTAssertEqual(weatherViewModel.cityName, "Jodhpur", "city name should be Jodhpur")
-        XCTAssertEqual(weatherViewModel.countryName, "In", "Country name must be IN")
-        XCTAssertEqual(weatherViewModel.cityID, 4163971,"city ID must be 4163971")
-        
-        if let settingsModel = UserDefaults.standard.getUserSavedSettings() {
-            if settingsModel.tempUnit == "Celsius" {
-                XCTAssertEqual(weatherViewModel.temperature, "83.28℃", "Country name must be IN")
-                XCTAssertEqual(weatherViewModel.maxTemperature, "83.28℃", "Country name must be IN")
-                XCTAssertEqual(weatherViewModel.minTemperature, "83.28℃", "Country name must be IN")
-            } else {
-                XCTAssertEqual(weatherViewModel.temperature, "83.28℉", "Country name must be IN")
-                XCTAssertEqual(weatherViewModel.maxTemperature, "83.28℉", "Country name must be IN")
-                XCTAssertEqual(weatherViewModel.minTemperature, "83.28℉", "Country name must be")
-            }
-        }
-        
+        let weatherViewModel = weatherListViewModel?.weatherViewModels[indexPath.row]
+        XCTAssertNotEqual(weatherViewModel?.temperature, "", "temperature should not be empty")
+        XCTAssertEqual(weatherViewModel?.cityName, "Jodhpur", "city name should be Jodhpur")
+        XCTAssertEqual(weatherViewModel?.weatherData.sys.country, "IN", "Country name must be IN")
+        XCTAssertEqual(weatherViewModel?.cityID, 4163971,"city ID must be 4163971")
         expectation.fulfill()
     }
 }

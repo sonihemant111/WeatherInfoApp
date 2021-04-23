@@ -1,31 +1,28 @@
 //
-//  AddMoreCityViewControllerTest.swift
+//  WeatherViewControllerTest.swift
 //  WeatherInfoTests
 //
-//  Created by Hemant Soni on 23/04/21.
-//
+//  Created by Hemant Soni on 22/04/21.
 
 import XCTest
 @testable import WeatherInfo
 
-class AddMoreCityViewControllerTest: XCTestCase {
-    var storyboard: UIStoryboard!
-    var sut: AddMoreCityViewController!
-    var viewModel: AddMoreCityViewModel?
+class WeatherListViewControllerTest: XCTestCase {
+    private var storyboard: UIStoryboard!
+    private var sut: WeatherListTableViewController!
+    private var weatherListViewModel: WeatherListViewModel!
     
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         storyboard = UIStoryboard(name: "WeatherInfo", bundle: nil)
-        sut = storyboard.instantiateViewController(withIdentifier: "AddMoreCityViewController") as? AddMoreCityViewController
+        sut = storyboard.instantiateViewController(withIdentifier: "WeatherListTableViewController") as? WeatherListTableViewController
         sut.loadViewIfNeeded()
-        viewModel = sut.viewModel
+        weatherListViewModel = sut.weatherListViewModel
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         storyboard = nil
         sut = nil
-        viewModel = nil
+        weatherListViewModel = nil
     }
     
     func testThatViewLoads() {
@@ -34,7 +31,7 @@ class AddMoreCityViewControllerTest: XCTestCase {
     
     func testParentViewHasTableViewSubview() {
         XCTAssertTrue(self.sut.view.contains(self.sut.tableView), "View does not have a table subview")
-    }
+    }    
     
     func testThatTableViewLoads() {
         XCTAssertNotNil(self.sut.tableView, "TableView is not connected to an IBOutlet")
@@ -43,7 +40,7 @@ class AddMoreCityViewControllerTest: XCTestCase {
 }
 
 //Mark: UITableView tests
-extension AddMoreCityViewControllerTest {
+extension WeatherListViewControllerTest {
     func testThatViewConformsToUITableViewDataDelegate() {
         XCTAssertTrue(self.sut.conforms(to: UITableViewDelegate.self), "View does not conform to UITableView delegate protocol")
     }
@@ -62,5 +59,21 @@ extension AddMoreCityViewControllerTest {
     
     func testTableViewNumberOfRowsInSection() {
         XCTAssertTrue(self.sut.tableView.numberOfSections == 1, "TableView must have 1 section")
+    }
+    
+    func test_cellForRow_populatesCell() {
+        if weatherListViewModel.weatherViewModels.count == 0 {
+            let weatherViewModel = WeatherViewModel()
+            weatherViewModel.weatherData.cityID = 1234
+            weatherViewModel.weatherData.name = "Jodhpur"
+            weatherListViewModel.weatherViewModels.append(weatherViewModel)
+        }
+        
+        let weatherViewModel = self.weatherListViewModel.weatherViewModels[0]
+        weatherViewModel.weatherData.name = "Jodhpur"
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = self.sut.tableView.dataSource?.tableView(self.sut.tableView, cellForRowAt: indexPath) as! WeatherInformationTableViewCell
+        XCTAssertEqual(cell.cityNameLabel.text, "Jodhpur", "City name text should be Jodhpur")
     }
 }

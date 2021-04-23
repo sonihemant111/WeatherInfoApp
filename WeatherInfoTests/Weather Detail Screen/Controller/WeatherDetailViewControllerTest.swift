@@ -9,8 +9,8 @@ import XCTest
 @testable import WeatherInfo
 
 class WeatherDetailViewControllerTest: XCTestCase {
-    var storyboard: UIStoryboard!
-    var sut: WeatherDetailViewController!
+    private var storyboard: UIStoryboard!
+    private var sut: WeatherDetailViewController!
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

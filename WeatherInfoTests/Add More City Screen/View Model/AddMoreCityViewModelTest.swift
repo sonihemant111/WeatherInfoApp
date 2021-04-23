@@ -11,9 +11,9 @@ import RealmSwift
 
 class AddMoreCityViewModelTest: XCTestCase {
     
-    var addMoreViewModel: AddMoreCityViewModel?
-    var expectationToFetchCityData = XCTestExpectation()
-    var cityName = "Gerton"
+    private var addMoreViewModel: AddMoreCityViewModel?
+    private var expectationToFetchCityData = XCTestExpectation()
+    private var cityName = "Gerton"
     
     override func setUpWithError() throws {
         addMoreViewModel = AddMoreCityViewModel()
@@ -25,6 +25,7 @@ class AddMoreCityViewModelTest: XCTestCase {
         addMoreViewModel = nil
     }
     
+    // Method to get searched city by the user
     func getSearchCity() {
         expectationToFetchCityData = self.expectation(description: "Success Test")
         addMoreViewModel?.fetchSearchedCity(cityName)
@@ -59,6 +60,7 @@ class AddMoreCityViewModelTest: XCTestCase {
     }
 }
 
+// MARK: AddMoreCityViewModelProtocol
 extension AddMoreCityViewModelTest: AddMoreCityViewModelProtocol {
     func fetchedDataSuccessfully() {
         if let numberOfSearchResult = addMoreViewModel?.numberOfRow {
