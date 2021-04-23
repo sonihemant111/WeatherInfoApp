@@ -68,9 +68,13 @@ class WeatherAPI: NetworkManagerProtocol {
     
     // Method to fetch forcast of specific city
     func fetchNextFiveWeatherForecast(city: String, completion: @escaping ([ForecastTemperature]?, WeatherInfoError?) -> ()) {
-        // remove diacritics string example één to een from cityname
-        let formattedCity = (city.folding(options: .diacriticInsensitive, locale: .current)).replacingOccurrences(of: " ", with: "+").stripped
-        let API_URL = URLManager.init().getURLToFetchForecastOfCity(city: formattedCity)
+        guard let sanitizedCityName = city.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
+            print("Error: while sanitizing city name")
+            completion(nil, .someWentWrong)
+            return
+        }
+        
+        let API_URL = URLManager.init().getURLToFetchForecastOfCity(city: sanitizedCityName)
         
         var currentDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
         var secondDayTemp = ForecastTemperature(weekDay: nil, hourlyForecast: nil)
