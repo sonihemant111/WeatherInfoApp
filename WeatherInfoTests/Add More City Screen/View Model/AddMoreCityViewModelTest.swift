@@ -25,10 +25,17 @@ class AddMoreCityViewModelTest: XCTestCase {
         addMoreViewModel = nil
     }
     
-    // Method to get searched city by the user
-    func getSearchCity() {
+    // Method to get searched city when city name is not empty
+    func getSearchCityPositive() {
         expectationToFetchCityData = self.expectation(description: "Success Test")
         addMoreViewModel?.fetchSearchedCity(cityName)
+        waitForExpectations(timeout: 20)
+    }
+    
+    // Method to get searched city when cityName is empty
+    func getSearchCityNegative() {
+        expectationToFetchCityData = self.expectation(description: "Success Test")
+        addMoreViewModel?.fetchSearchedCity("")
         waitForExpectations(timeout: 20)
     }
     
@@ -52,7 +59,8 @@ class AddMoreCityViewModelTest: XCTestCase {
                 cityData.append(city)
                 self.addMoreViewModel?.dbManager.saveCity(city: cityData)
                 
-                self.getSearchCity()
+                self.getSearchCityPositive()
+                self.getSearchCityNegative()
               } catch {
                 print(error.localizedDescription)
               }
