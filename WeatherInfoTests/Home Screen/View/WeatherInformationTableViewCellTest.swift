@@ -10,7 +10,7 @@ import XCTest
 
 class WeatherInformationTableViewCellTest: XCTestCase {
     
-    private var WeatherInformationTableViewCell: WeatherInformationTableViewCell!
+    private var weatherInformationTableViewCell: WeatherInformationTableViewCell!
     private var tableView: UITableView!
     private let weatherViewModel = WeatherViewModel()
     private var dataSource: TableViewDataSource!
@@ -27,7 +27,7 @@ class WeatherInformationTableViewCellTest: XCTestCase {
         tableView.dataSource = dataSource
     }
     
-    func testAwakeFromNib() {
+    func testAwakeFromNib() throws {
         let indexPath = IndexPath(row: 0, section: 0)
         let cell = createCell(indexPath: indexPath)
         cell.configureCell(weatherViewModel)
