@@ -35,6 +35,9 @@ class WeatherInformationTableViewCellTest: XCTestCase {
         XCTAssertNotNil(cell.cityNameLabel, "cityNameLabel should not be nil")
         XCTAssertNotNil(cell.refreshButton, "refreshButton should not be nil")
         XCTAssertEqual(cell.cityNameLabel.text, "Jodhpur", "City Label text should be Jodhpur")
+        if let indexPath = cell.indexPath {
+            XCTAssertEqual(Int(indexPath.row), 0, "Row number should be 0")
+        }
     }
 }
 
