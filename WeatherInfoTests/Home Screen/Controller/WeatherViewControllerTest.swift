@@ -25,6 +25,26 @@ class WeatherListViewControllerTest: XCTestCase {
         weatherListViewModel = nil
     }
     
+    func testPullToRefresh() {
+        sut.refreshWeatherData()
+    }
+    
+    func testCheckInternetConnection() {
+        sut.checkInternetConnection()
+    }
+    
+    func testRedirectUserToSettingScreen() {
+        sut.redirectToSettingsScreen()
+    }
+    
+    func testRedirectUserToAddMoreCityScreen() {
+        sut.redirectToAddMoreCityScreen()
+    }
+    
+    func testShowAlert() {
+        sut.showToast("Testing")
+    }
+    
     func testThatViewLoads() {
         XCTAssertNotNil(sut.view, "View not initiated properly")
     }

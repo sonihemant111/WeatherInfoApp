@@ -30,6 +30,7 @@ class DBManagerTest: XCTestCase {
         let totalCitiesStored = dbManager.fetchAllSelectedCities().count
         XCTAssertGreaterThan(totalCitiesStored, 0, "totalCitiesStored must have some value")
     }
+    
 
     func testIsCityDataStoredInLocalDBPositive() {
         self.saveCityListJSONToDB()
@@ -56,7 +57,8 @@ class DBManagerTest: XCTestCase {
                 }
                 guard let city = cityData.last else { return  }
                 // set this city to visible bydefault
-                city.isVisible = true
+                self.dbManager.updateVisibilityStatus(city, true)
+//                city.isVisible = true
                 cityData.removeAll()
                 cityData.append(city)
                 dbManager.saveCity(city: cityData)

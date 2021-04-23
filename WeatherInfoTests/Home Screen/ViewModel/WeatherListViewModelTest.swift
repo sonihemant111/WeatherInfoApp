@@ -12,14 +12,34 @@ class WeatherListViewModelTest: XCTestCase {
 
     private var weatherListViewModel: WeatherListViewModel?
     private var expectation = XCTestExpectation()
+    private var weatherViewModels = [WeatherViewModel]()
     
     override func setUpWithError() throws {
         weatherListViewModel = WeatherListViewModel()
         
         let urlManager = URLManager()
-        let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
 
-        URLProtocolMock.testURLs = [url! : "WeatherData"]
+        
+        // prepare weatherViewModel
+        for i in 0...1 {
+            let weatherViewModel = WeatherViewModel()
+            var weatherData = WeatherModel()
+            weatherData.cityID = 4163971
+            if i == 1 {
+                weatherData.name = "Jodhpur"
+                let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
+                URLProtocolMock.testURLs[url!] = "WeatherData"
+            } else {
+                weatherData.name = "Jaipur12345"
+                let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jaipur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
+                URLProtocolMock.testURLs[url!] = "WeatherData"
+            }
+            weatherViewModel.weatherData = weatherData
+            weatherViewModel.indexPath = IndexPath(row: i, section: 0)
+            weatherViewModel.delegate = self
+            weatherViewModels.append(weatherViewModel)
+        }
+        
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)
@@ -32,20 +52,18 @@ class WeatherListViewModelTest: XCTestCase {
         URLProtocolMock.clearMock()
     }
     
-    func testGetCityWeather() throws {
-        // prepare weatherViewModel
-        let weatherViewModel = WeatherViewModel()
-        var weatherData = WeatherModel()
-        weatherData.cityID = 4163971
-        weatherData.name = "Jodhpur"
-        weatherViewModel.weatherData = weatherData
-        weatherViewModel.indexPath = IndexPath(row: 0, section: 0)
-        weatherViewModel.delegate = self
-        weatherListViewModel?.weatherViewModels.append(weatherViewModel)
-
+    func testGetCityWeatherPositive() throws {
+        let weatherViewModel = self.weatherViewModels[0]
         expectation = self.expectation(description: "Success Test")
         weatherViewModel.getWeatherData()
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 20)
+    }
+    
+    func testGetCityWeatherNegative() throws {
+        let weatherViewModel = self.weatherViewModels[1]
+        expectation = self.expectation(description: "Success Test")
+        weatherViewModel.getWeatherData()
+        waitForExpectations(timeout: 20)
     }
 }
 
@@ -57,11 +75,11 @@ extension WeatherListViewModelTest: WeatherViewModelProtocol {
     }
     
     func didReceiveTemperatureData(_ indexPath: IndexPath) {
-        let weatherViewModel = weatherListViewModel?.weatherViewModels[indexPath.row]
-        XCTAssertNotEqual(weatherViewModel?.temperature, "", "temperature should not be empty")
-        XCTAssertEqual(weatherViewModel?.cityName, "Jodhpur", "city name should be Jodhpur")
-        XCTAssertEqual(weatherViewModel?.weatherData.sys.country, "IN", "Country name must be IN")
-        XCTAssertEqual(weatherViewModel?.cityID, 4163971,"city ID must be 4163971")
+        let weatherViewModel = self.weatherViewModels[indexPath.row]
+        XCTAssertNotEqual(weatherViewModel.temperature, "", "temperature should not be empty")
+        XCTAssertEqual(weatherViewModel.cityName, "Jodhpur", "city name should be Jodhpur")
+        XCTAssertEqual(weatherViewModel.weatherData.sys.country, "IN", "Country name must be IN")
+        XCTAssertEqual(weatherViewModel.cityID, 4163971,"city ID must be 4163971")
         expectation.fulfill()
     }
 }

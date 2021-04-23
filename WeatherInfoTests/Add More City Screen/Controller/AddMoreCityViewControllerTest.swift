@@ -37,6 +37,11 @@ class AddMoreCityViewControllerTest: XCTestCase {
     func testThatTableViewLoads() {
         XCTAssertNotNil(self.sut.tableView, "TableView is not connected to an IBOutlet")
     }
+    
+    func testThatSearchBarConnected() throws {
+        let searchBar = try XCTUnwrap(sut.searchBar, "The search bar is not connected to an IBOutlet")
+        XCTAssertEqual(searchBar.text, "", "Search Bar text field was not empty when the view controller initially loaded")
+    }
 }
 
 //Mark: UITableView tests
