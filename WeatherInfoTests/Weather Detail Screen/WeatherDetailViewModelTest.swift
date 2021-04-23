@@ -16,6 +16,7 @@ class WeatherDetailViewModelTest: XCTestCase {
     override func setUpWithError() throws {
         var currentSelectedWeatherData = WeatherModel()
         currentSelectedWeatherData.name = "Jodhpur"
+        currentSelectedWeatherData.cityID = 4163971
         currentSelectedWeatherData.main.humidity = 321
 
         weatherDetailViewModel = WeatherDetailViewModel()
@@ -23,26 +24,23 @@ class WeatherDetailViewModelTest: XCTestCase {
         let weatherViewModel = WeatherViewModel()
         weatherViewModel.weatherData = currentSelectedWeatherData
         weatherDetailViewModel?.currentSelectedWeatherViewModel = weatherViewModel
-        
-        let urlManager = URLManager()
-        let url = URL(string: urlManager.getURLToFetchWeatherOfCity(city: "Jodhpur", tempUnit: TemperatureScale.getUserSavedSettingTempUnitType().rawValue))
-
+    }
+    
+    override func tearDownWithError() throws {
+            }
+    
+    func testGetForecastData() {
+        let urlManager = URLManager.init()
+        let url = URL(string: urlManager.getURLToFetchForecastOfCity(city: "Jodhpur"))
         URLProtocolMock.testURLs = [url! : "WeatherForecastData"]
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)
         NetworkManager.main.setMockSession(session: session)
-    }
-    
-    override func tearDownWithError() throws {
-        weatherDetailViewModel = nil
-        URLProtocolMock.clearMock()
-    }
-    
-    func testGetCityWeather() throws {
+        
         expectation = self.expectation(description: "Success Test")
         weatherDetailViewModel?.fetchForcastData()
-        waitForExpectations(timeout: 20)
+        waitForExpectations(timeout: 10)
     }
     
     func testCurrentSelectedCityBasicData() {
@@ -52,7 +50,6 @@ class WeatherDetailViewModelTest: XCTestCase {
                 XCTAssertEqual(weatherDetailViewModel?.currentSelectedCityHumidity, "321.0℃", "Current selected city name should be Jodhpur")
             } else {
                 XCTAssertEqual(weatherDetailViewModel?.currentSelectedCityHumidity, "321.0℉", "Current selected city name should be Jodhpur")
-
             }
         }
     }
@@ -62,7 +59,7 @@ class WeatherDetailViewModelTest: XCTestCase {
 extension WeatherDetailViewModelTest: WeatherDetailViewModelProtocol {
     func didReceiveAPISuccess() {
         XCTAssertEqual(weatherDetailViewModel?.forecastData.count, 6, "Forecast Data count Should be 6")
-        let weatherInfo = weatherDetailViewModel?.itemAt(index: 1).hourlyForecast?[0]
+        let weatherInfo = weatherDetailViewModel?.itemAt(index: 0).hourlyForecast?[0]
         XCTAssertEqual(weatherDetailViewModel?.itemAt(index: 1).hourlyForecast?.count, 8, "Hourly Forecast count must be 8 for the next day forrcast")
         XCTAssertEqual(weatherInfo?.max_temp, 297.8, "Max temp must 297.8")
         XCTAssertNotEqual(weatherInfo?.min_temp, 300, "Max temp must 297.8")
@@ -70,6 +67,9 @@ extension WeatherDetailViewModelTest: WeatherDetailViewModelProtocol {
         XCTAssertEqual(weatherInfo?.time, "2021-04-24 00:00:00", "time should be 2021-04-24 00:00:00")
         XCTAssertEqual(weatherInfo?.icon, "02n", "Icon should be 02n")
         expectation.fulfill()
+        weatherDetailViewModel = nil
+        URLProtocolMock.clearMock()
+
     }
     
     func didAPIFailWithError(_ error: WeatherInfoError) {

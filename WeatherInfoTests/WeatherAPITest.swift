@@ -30,7 +30,7 @@ class WeatherAPITest: XCTestCase {
             }
             self.expectationForWeatherData.fulfill()
         }
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 20)
     }
     
     func testForecastDataOfCity() {
