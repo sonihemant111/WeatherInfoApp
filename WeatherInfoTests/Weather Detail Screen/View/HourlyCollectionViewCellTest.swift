@@ -44,7 +44,13 @@ class HourlyCollectionViewCellTest: XCTestCase {
             XCTAssertNotNil(cell.temperatureSymbol, "temperatureSymbol should not be nil")
             XCTAssertNotNil(cell.temperatureLabel, "temperatureLabel should not be nil")
 
-            XCTAssertEqual(cell.temperatureLabel.text, "100.13", "temperatureUnit Label text should be fahrenheit")
+            let settingModel = UserDefaults.standard.getUserSavedSettings()
+            if settingModel?.tempUnit.lowercased() == StringConstants.fahrenheit {
+                XCTAssertEqual(cell.temperatureLabel.text, "37.79", "temperatureUnit Label text should be fahrenheit")
+            } else {
+                XCTAssertEqual(cell.temperatureLabel.text, "100.13", "temperatureUnit Label text should be fahrenheit")
+            }
+            
             XCTAssertEqual(cell.hourlyTimeLabel.text, "", "temperatureUnit Label text should be empty")
 
         }
