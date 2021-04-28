@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol WeatherViewModelProtocol {
+protocol WeatherViewModelProtocol: class {
     func didReceiveTemperatureData(_ indexPath: IndexPath)
     func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError)
 }
@@ -16,7 +16,7 @@ class WeatherViewModel {
     
     var weatherData: WeatherModel
     var indexPath: IndexPath?
-    var delegate: WeatherViewModelProtocol?
+    weak var delegate: WeatherViewModelProtocol?
     
     var updateUI: ((_ weatherViewModel: WeatherViewModel, _ indexPath: IndexPath) -> Void)?
     

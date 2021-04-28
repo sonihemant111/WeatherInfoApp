@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol WeatherListViewModelProtocol {
+protocol WeatherListViewModelProtocol: class {
     func didReceiveWeatherDetailsAt(_ indexPath: IndexPath)
 }
 
 class WeatherListViewModel {
     var weatherViewModels = [WeatherViewModel]()
-    var delegate: WeatherListViewModelProtocol?
+    weak var delegate: WeatherListViewModelProtocol?
     let dbManager = DBManager()
     
     // Method to add new weather view model

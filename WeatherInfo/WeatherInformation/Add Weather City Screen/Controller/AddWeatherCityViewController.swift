@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol AddMoreCityViewControllerProtocol {
+protocol AddMoreCityViewControllerProtocol: class {
     func didNewCityAddedSuccessfully(_ cityName: String, _ cityId: Int64)
 }
 
@@ -18,7 +18,7 @@ class AddMoreCityViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     private var pendingRequestWorkItem: DispatchWorkItem?
     var viewModel = AddMoreCityViewModel()
-    var delegate: AddMoreCityViewControllerProtocol?
+    weak var delegate: AddMoreCityViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()

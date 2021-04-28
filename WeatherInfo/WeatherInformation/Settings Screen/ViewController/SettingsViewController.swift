@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SettingsViewControllerProtocol {
+protocol SettingsViewControllerProtocol: class {
     func didUpdateUserSettings()
 }
 
@@ -15,7 +15,7 @@ class SettingsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var viewModel = SettingsViewModel()
-    var delegate: SettingsViewControllerProtocol?
+    weak var delegate: SettingsViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()

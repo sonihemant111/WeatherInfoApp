@@ -7,16 +7,15 @@
 
 import Foundation
 
-protocol WeatherDetailViewModelProtocol {
+protocol WeatherDetailViewModelProtocol: class {
     func didReceiveAPISuccess()
     func didAPIFailWithError(_ error: WeatherInfoError)
 }
 
-
 class WeatherDetailViewModel {
     
     var forecastData: [ForecastTemperature] = []
-    var viewModelDelegate: WeatherDetailViewModelProtocol?
+    weak var viewModelDelegate: WeatherDetailViewModelProtocol?
     var currentSelectedWeatherViewModel: WeatherViewModel?
     
     // Method to call API to Fetch currect selected city's Forcast

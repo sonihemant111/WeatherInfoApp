@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol AddMoreCityViewModelProtocol {
+protocol AddMoreCityViewModelProtocol: class {
     func fetchedDataSuccessfully()
 }
 
 class AddMoreCityViewModel {
     var dbManager = DBManager()
     var addMoreCityViewModels = [CityModel]()
-    var delegate: AddMoreCityViewModelProtocol?
+    weak var delegate: AddMoreCityViewModelProtocol?
     
     // Method to fetch data from database
     func fetchSearchedCity(_ searchKeyword: String) {
