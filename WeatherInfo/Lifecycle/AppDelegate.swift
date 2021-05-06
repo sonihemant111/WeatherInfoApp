@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.fetchCityDataFromJSON()
             dbManager.setDefaultCity()
         }
-        
+        dbManager.setDefaultCity()
         return true
     }
     
