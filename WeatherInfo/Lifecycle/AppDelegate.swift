@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !dbManager.checkIsAllCitiesDataAlreadySaved() {
             self.fetchCityDataFromJSON()
         }
-        print("Added cherry pick print")
         dbManager.setDefaultCity()
         return true
     }
