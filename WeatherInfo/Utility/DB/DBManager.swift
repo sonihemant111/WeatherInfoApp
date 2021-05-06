@@ -75,12 +75,24 @@ class DBManager {
         return false
     }
     
+    // Method to save city
+    func saveCity(city: List<CityModel>) {
+        do {
+            let localRealm = try Realm()
+            localRealm.beginWrite()
+            localRealm.add(city)
+            try localRealm.commitWrite()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     // Method to fetch cityData from realm DB
     func fetchCity(_ searchKeyword: String, completionHandler: @escaping ((Array<CityModel>) -> Void)) {
         do {
             let localRealm = try Realm()
             let tasks = localRealm.objects(CityModel.self)
-            let predicate = NSPredicate(format: "(cityName CONTAINS[c] %@)", searchKeyword)
+            let predicate = NSPredicate(format: "(cityName CONTAINS[c] %@ AND isVisible = false)", searchKeyword)
             let cityList = tasks.filter(predicate)
             completionHandler(Array(cityList))
         } catch {
@@ -93,7 +105,9 @@ class DBManager {
         do {
             let localRealm = try Realm()
             let tasks = localRealm.objects(CityModel.self)
-            completionHandler(Array(tasks))
+            let predicate = NSPredicate(format: "isVisible = false")
+            let citiesList = tasks.filter(predicate)
+            completionHandler(Array(citiesList))
         } catch {
             print(error.localizedDescription)
         }
@@ -107,10 +121,13 @@ class DBManager {
             let predicate = NSPredicate(format: "isVisible=true")
             let selectedCityList = tasks.filter(predicate)
             var arrCity = [(String,Int64)]()
-            for i in 0...selectedCityList.count - 1 {
-                let cityData = (cityName: selectedCityList[i].cityName, cityID: selectedCityList[i].id)
-                arrCity.append(cityData)
+            if selectedCityList.count > 0 {
+                for i in 0...selectedCityList.count - 1 {
+                    let cityData = (cityName: selectedCityList[i].cityName, cityID: selectedCityList[i].id)
+                    arrCity.append(cityData)
+                }
             }
+            
             return arrCity
         } catch {
             print(error.localizedDescription)

@@ -14,12 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let dbManager = DBManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        DBManager.printRealmFileUrl()
+        // Uncomment below line to view realm db file path
+        // DBManager.printRealmFileUrl()
         // set default user settings if user has not set any yet
         UserDefaults.standard.saveDefaultUserSettings()
         if !dbManager.checkIsAllCitiesDataAlreadySaved() {
             self.fetchCityDataFromJSON()
-            dbManager.setDefaultCity()
         }
         print("Added cherry pick print")
         dbManager.setDefaultCity()

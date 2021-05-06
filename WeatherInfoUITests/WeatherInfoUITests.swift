@@ -8,35 +8,70 @@
 import XCTest
 
 class WeatherInfoUITests: XCTestCase {
-
+    
+    var app: XCUIApplication!
+    // App's Table View
+    var weatherListTableView: XCUIElement!
+    var settingsTableView: XCUIElement!
+    var addMoreCityTableView: XCUIElement!
+    
+    // Nav Bar button on Home Screen
+    var settingNavBarButton: XCUIElement!
+    var addMoreCityNavBarButton: XCUIElement!
+    
+    // App's Table View Cell
+    var weatherListTableViewCell: XCUIElementQuery!
+    var addMoreCityTableViewCell: XCUIElementQuery!
+    var settingsTableViewCells: XCUIElementQuery!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launch()
+        
+        // Nav Bar Button
+        settingNavBarButton = app.buttons["settingButton"]
+        addMoreCityNavBarButton = app.buttons["addButton"]
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
+        weatherListTableView = nil
+        settingsTableView = nil
+        addMoreCityTableView = nil
+
+        settingNavBarButton = nil
+        addMoreCityNavBarButton = nil
+        
+        settingsTableViewCells = nil
+        weatherListTableViewCell = nil
+        addMoreCityTableViewCell = nil
+        
+        try super.tearDownWithError()
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testWeatherInfo_WeatherListHomeScreen() {
+        // Initialize XCUIElement
+        weatherListTableView = app.tables["WeatherListTableView"]
+        weatherListTableViewCell = weatherListTableView.cells
+        
+        XCTAssertTrue(weatherListTableView.isEnabled, "")
+        XCTAssertTrue(settingNavBarButton.isEnabled, "")
+        XCTAssertTrue(addMoreCityNavBarButton.isEnabled, "")
     }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    
+    func testWeatherInfo_SettingScreen_ChooseTempUnit() {
+        // Go to settings screen
+        settingNavBarButton.tap()
+        // select fahrenheit
+        settingsTableView = app.tables["settingsTable"]
+        XCTAssertTrue(settingsTableView.isEnabled, "")
+        settingsTableViewCells = settingsTableView.cells
+        settingsTableViewCells.element(boundBy: 1).tap()
+    }
+        
+    func testWeatherInfo_AddMoreCityScreen_SearchByCityName_AddNewCity() {
+        // Go to add city
+        addMoreCityNavBarButton.tap()
     }
 }

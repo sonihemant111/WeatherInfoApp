@@ -7,24 +7,29 @@
 
 import Foundation
 
-protocol WeatherDetailViewModelProtocol {
+protocol WeatherDetailViewModelProtocol: class {
     func didReceiveAPISuccess()
-    func didAPIFailWithError()
+    func didAPIFailWithError(_ error: WeatherInfoError)
 }
 
 class WeatherDetailViewModel {
     
     var forecastData: [ForecastTemperature] = []
-    var viewModelDelegate: WeatherDetailViewModelProtocol?
+    weak var viewModelDelegate: WeatherDetailViewModelProtocol?
     var currentSelectedWeatherViewModel: WeatherViewModel?
     
     // Method to call API to Fetch currect selected city's Forcast
     func fetchForcastData() {
-        WeatherAPI.shared.fetchNextFiveWeatherForecast(city: currentSelectedWeatherViewModel?.cityName ?? "") { [weak self] (forecast) in
-            guard let `self` = self else { return }
-            self.forecastData = forecast
-            if let delegate = self.viewModelDelegate {
-                delegate.didReceiveAPISuccess()
+        WeatherAPI.shared.fetchNextFiveWeatherForecast(city: currentSelectedWeatherViewModel?.cityName ?? "") { [weak self] (forecast, error) in
+            
+            guard let `self` = self, let delegate = self.viewModelDelegate  else { return }
+            if let err = error {
+                delegate.didAPIFailWithError(err)
+            } else {
+                if let forecastData = forecast {
+                    self.forecastData = forecastData
+                    delegate.didReceiveAPISuccess()
+                }
             }
         }
     }
@@ -34,7 +39,7 @@ class WeatherDetailViewModel {
         return forecastData.count
     }
     
-    // Method to return
+    // Method to return ForecastTemperature
     func itemAt(index: Int) -> ForecastTemperature {
         return forecastData[index]
     }
@@ -42,6 +47,11 @@ class WeatherDetailViewModel {
     // To get selected city Name
     var currentSelectedCityName: String {
         return self.currentSelectedWeatherViewModel?.cityName.capitalized ?? ""
+    }
+    
+    // To get selected city's Country Name
+    var currentSelectedCountryName: String {
+        return self.currentSelectedWeatherViewModel?.countryName.capitalized ?? ""
     }
     
     // To get selected city's temp

@@ -20,10 +20,6 @@ class CityModel: Object, Codable {
         case id, cityName = "name", countryName = "country", state, coordinate = "coord"
     }
     
-//    override static func primaryKey() -> String? {
-//        return "id"
-//    }
-    
     override init() {
         super.init()
     }

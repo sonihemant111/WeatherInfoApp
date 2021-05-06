@@ -7,16 +7,16 @@
 
 import Foundation
 
-protocol WeatherViewModelProtocol {
+protocol WeatherViewModelProtocol: class {
     func didReceiveTemperatureData(_ indexPath: IndexPath)
-    func didFailWithError(_ indexPath: IndexPath)
+    func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError)
 }
 
 class WeatherViewModel {
     
     var weatherData: WeatherModel
     var indexPath: IndexPath?
-    var delegate: WeatherViewModelProtocol?
+    weak var delegate: WeatherViewModelProtocol?
     
     var updateUI: ((_ weatherViewModel: WeatherViewModel, _ indexPath: IndexPath) -> Void)?
     
@@ -30,26 +30,34 @@ class WeatherViewModel {
         
         if (AppNetworking.isConnected()) {
             WeatherAPI.shared.fetchCurrentWeather(cityName: weatherData.name ?? "" , tempScale: TemperatureScale.getUserSavedSettingTempUnitType()) { [weak self] (data, err)  in
-                guard let `self` = self, let weatherData = data, let delegate = self.delegate, let indexPath = self.indexPath else { return }
+                
+                guard let `self` = self, let delegate = self.delegate, let indexPath = self.indexPath else { return }
+                
                 if err != nil {
                     self.weatherData.isRefreshNeeded = true
+                    delegate.didFailWithError(indexPath, WeatherInfoError.noDataFound)
                 } else {
+                    guard let weatherData = data else { return }
                     self.weatherData.isRefreshNeeded = false
-                    let cityID = self.weatherData.cityID
+                    let cityID: Int64 = self.weatherData.cityID ?? 0
                     self.weatherData = weatherData
                     self.weatherData.cityID = cityID
+                    delegate.didReceiveTemperatureData(indexPath)
                 }
-                delegate.didReceiveTemperatureData(indexPath)
             }
         } else {
             guard let delegate = self.delegate, let indexPath = self.indexPath else { return }
             self.weatherData.isRefreshNeeded = true
-            delegate.didFailWithError(indexPath)
+            delegate.didFailWithError(indexPath, WeatherInfoError.noInternetConnection)
         }
     }
     
     var cityName: String {
         return weatherData.name?.capitalized ?? ""
+    }
+    
+    var countryName: String {
+        return (weatherData.sys.country ?? "").capitalized 
     }
     
     var cityID: Int64 {

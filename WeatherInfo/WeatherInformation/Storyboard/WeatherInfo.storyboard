@@ -29,12 +29,15 @@
         <!--Weather-->
         <scene sceneID="bxy-zc-IGh">
             <objects>
-                <tableViewController id="oeg-MO-aBl" customClass="WeatherListTableViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WeatherListTableViewController" id="oeg-MO-aBl" customClass="WeatherListTableViewController" customModule="WeatherInfo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="COD-Ec-jgM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="WeatherListTableView"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="dataSource" destination="oeg-MO-aBl" id="HfC-nl-3dY"/>
                             <outlet property="delegate" destination="oeg-MO-aBl" id="vTZ-X0-TSf"/>
@@ -43,9 +46,15 @@
                     <navigationItem key="navigationItem" title="Weather" largeTitleDisplayMode="always" id="0d6-p6-kjG">
                         <barButtonItem key="leftBarButtonItem" image="SettingsIcon" id="UK6-v4-I65">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="settingButton"/>
+                            </userDefinedRuntimeAttributes>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="RcC-ch-68S">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="addButton"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <segue destination="pDA-kj-529" kind="presentation" id="EYa-4G-VmF"/>
                             </connections>
@@ -82,6 +91,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jfj-4i-UnL">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="settingsTable"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="UeD-D1-P7y" id="WBt-SF-Hl0"/>
                                     <outlet property="delegate" destination="UeD-D1-P7y" id="ens-al-1yD"/>
@@ -115,22 +127,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a2Y-cV-Zkm">
-                                <rect key="frame" x="0.0" y="44" width="414" height="286"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="236"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5hK-Vv-YBd">
-                                        <rect key="frame" x="10" y="10" width="394" height="266"/>
+                                        <rect key="frame" x="10" y="10" width="394" height="216"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Jodhpur, India" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQt-Ti-eEv">
-                                                <rect key="frame" x="0.0" y="0.0" width="394" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="rNr-3E-p1y"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="24"/>
-                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ZuD-rt-muh">
-                                                <rect key="frame" x="0.0" y="50" width="394" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="394" height="36"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15 April 2021" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9V-sA-oVg">
                                                         <rect key="frame" x="0.0" y="0.0" width="101.5" height="36"/>
@@ -150,7 +153,7 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Zr9-Wx-GVO">
-                                                <rect key="frame" x="0.0" y="96" width="175.5" height="50"/>
+                                                <rect key="frame" x="0.0" y="46" width="175.5" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Humidity: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JVT-k4-Yuo">
                                                         <rect key="frame" x="0.0" y="0.0" width="93" height="50"/>
@@ -167,7 +170,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="h3O-M7-1qN">
-                                                <rect key="frame" x="0.0" y="156" width="269.5" height="50"/>
+                                                <rect key="frame" x="0.0" y="106" width="269.5" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minimum Temperature: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKK-g1-oCo">
                                                         <rect key="frame" x="0.0" y="0.0" width="214.5" height="50"/>
@@ -184,7 +187,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Y94-Uv-keu">
-                                                <rect key="frame" x="0.0" y="216" width="257.5" height="50"/>
+                                                <rect key="frame" x="0.0" y="166" width="257.5" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum Teperature: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCY-bu-dhN">
                                                         <rect key="frame" x="0.0" y="0.0" width="202.5" height="50"/>
@@ -204,7 +207,6 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="ZuD-rt-muh" secondAttribute="trailing" id="SSj-BP-9Hb"/>
                                             <constraint firstItem="ZuD-rt-muh" firstAttribute="leading" secondItem="5hK-Vv-YBd" secondAttribute="leading" id="i99-0D-h9v"/>
-                                            <constraint firstAttribute="trailing" secondItem="DQt-Ti-eEv" secondAttribute="trailing" id="lDJ-Yv-RfG"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -217,7 +219,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K7U-oQ-bD7">
-                                <rect key="frame" x="0.0" y="330" width="414" height="566"/>
+                                <rect key="frame" x="0.0" y="280" width="414" height="616"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Yg0-Z1-Rhe">
                                     <size key="itemSize" width="128" height="128"/>
@@ -250,7 +252,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="cityAndCountryNameLabel" destination="DQt-Ti-eEv" id="i4h-B2-KV0"/>
                         <outlet property="collectionView" destination="K7U-oQ-bD7" id="uNm-6m-1Lv"/>
                         <outlet property="dateLabel" destination="p9V-sA-oVg" id="F8V-Bn-ElU"/>
                         <outlet property="humidityLabel" destination="0wQ-uf-xBt" id="9yX-LV-d9q"/>
@@ -274,9 +275,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3V-YL-QeV">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" placeholder="Search city by name or location" translatesAutoresizingMaskIntoConstraints="NO" id="6kF-p7-8IK">
+                                    <searchBar contentMode="redraw" text="" placeholder="Search city by name" translatesAutoresizingMaskIntoConstraints="NO" id="6kF-p7-8IK">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="searchBar"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="delegate" destination="p35-AK-DJQ" id="iCy-V6-vfE"/>
                                         </connections>
@@ -284,6 +288,9 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ilZ-Us-lhB">
                                         <rect key="frame" x="0.0" y="56" width="414" height="796"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="addCityTableView"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="p35-AK-DJQ" id="UzT-Qt-JDH"/>
                                             <outlet property="delegate" destination="p35-AK-DJQ" id="3Il-i1-ZN5"/>

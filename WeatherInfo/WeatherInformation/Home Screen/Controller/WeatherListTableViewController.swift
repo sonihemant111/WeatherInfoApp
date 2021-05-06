@@ -11,33 +11,24 @@ import Toast_Swift
 
 class WeatherListTableViewController: UITableViewController {
     
-    private var weatherListViewModel = WeatherListViewModel()
+    var weatherListViewModel = WeatherListViewModel()
     private var dbManager = DBManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.registerNib()
         self.weatherListViewModel.delegate = self
+        self.weatherListViewModel.fetchSelectedCities()
         self.configureRefreshController()
         self.checkInternetConnection()
         // Method to call API periodically
         Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(refreshWeatherData), userInfo: nil, repeats: true)
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         configureNavigationBar()
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    func addWeatherDidSave(_ weatherViewModel: WeatherViewModel) {
-        self.weatherListViewModel.addWeatherViewModel(weatherViewModel)
-        self.tableView.reloadData()
-    }
-    
+        
     // Method to refresh weather data
     @objc func refreshWeatherData() {
         self.refreshControl?.endRefreshing()
@@ -45,9 +36,12 @@ class WeatherListTableViewController: UITableViewController {
         if !self.checkInternetConnection() {
             return
         }
-        self.weatherListViewModel.refreshTemperatureData()
+        
+        if weatherListViewModel.numberOfRows(0) > 0 {
+            self.weatherListViewModel.refreshTemperatureData()
+        }
+        self.tableView.reloadData()
     }
-    
     
     // Method to setup Refresh controller
     func configureRefreshController() {
@@ -64,14 +58,14 @@ class WeatherListTableViewController: UITableViewController {
     
     // Method to redirect user to weatherDetail screen
     @objc func redirectToAddMoreCityScreen() {
-        let addMoreCityVC: AddMoreCityViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "AddMoreCityViewController") as! AddMoreCityViewController
+        let addMoreCityVC: AddMoreCityViewController = self.storyboard?.instantiateViewController(withIdentifier: "AddMoreCityViewController") as! AddMoreCityViewController
         addMoreCityVC.delegate = self
         self.navigationController?.pushViewController(addMoreCityVC, animated: true)
     }
     
     // Method to redirect user to settimgs screen
     @objc func redirectToSettingsScreen() {
-        let settingsVC: SettingsViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        let settingsVC: SettingsViewController = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
         settingsVC.delegate = self
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
@@ -81,7 +75,7 @@ class WeatherListTableViewController: UITableViewController {
     func checkInternetConnection(showToast: Bool = true) -> Bool {
         if !AppNetworking.isConnected() {
             if showToast {
-                self.view.makeToast(StringConstants.noInternetConnectionMessage, duration: 1.0, position: .center)
+                self.view.makeToast(WeatherInfoError.noInternetConnection.rawValue, duration: 1.0, position: .center)
             }
             return false
         } else {
@@ -92,7 +86,9 @@ class WeatherListTableViewController: UITableViewController {
     // Show toast message
     func showToast(_ message: String) {
         // Show a Toast message
-        self.view.makeToast(message, duration: 1.0, position: .center)
+        DispatchQueue.main.async {
+            self.view.makeToast(message, duration: 1.0, position: .center)
+        }
     }
     
     // Method to configure Navigation Bar
@@ -116,6 +112,23 @@ class WeatherListTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem?.action = #selector(redirectToSettingsScreen)
     }
     
+    // Method to show alert
+    func showAlert(_ indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Alert", message: StringConstants.removeCityWarningMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { action in
+            // Update visibility status in DB
+            let weatherViewModel = self.weatherListViewModel.itemAt(indexPath.row)
+            self.dbManager.updateVisibilityStatusByCityID(weatherViewModel.cityID, false)
+            self.weatherListViewModel.removeItemAt(indexPath.row)
+            self.refreshWeatherData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "NO", style: .default, handler: { action in
+            // do nothing
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return weatherListViewModel.numberOfSection()
@@ -132,9 +145,10 @@ class WeatherListTableViewController: UITableViewController {
         cell.configureCell(weatherViewModel)
         cell.didTapOnRefreshButton = { (indexPath) in
             // check internet connection before calling API
-            self.checkInternetConnection()
-            // call API again to fetch weather data
-            weatherViewModel.getWeatherData()
+            if self.checkInternetConnection() {
+                // call API again to fetch weather data
+                weatherViewModel.getWeatherData()
+            }
         }
         return cell
     }
@@ -150,7 +164,7 @@ class WeatherListTableViewController: UITableViewController {
     
     // Method to redirect user to weatherDetail screen
     func redirectToWeatherDetailScreen(_ indexPath: IndexPath) {
-        let weatherDetailVC: WeatherDetailViewController = UIStoryboard(name: "WeatherInfo", bundle: nil).instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
+        let weatherDetailVC: WeatherDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "WeatherDetailViewController") as! WeatherDetailViewController
         let weatherModel = self.weatherListViewModel.itemAt(indexPath.row)
         weatherDetailVC.currentSelectedWeatherViewModel = weatherModel
         self.navigationController?.pushViewController(weatherDetailVC, animated: true)
@@ -163,14 +177,9 @@ class WeatherListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItem = UIContextualAction(style: .destructive, title: "Delete") {  [weak self] (contextualAction, view, boolValue) in
             guard let `self` = self else { return }
-            // Update visibility status in DB
-            let weatherViewModel = self.weatherListViewModel.itemAt(indexPath.row)
-            self.dbManager.updateVisibilityStatusByCityID(weatherViewModel.cityID, false)
-            self.weatherListViewModel.removeItemAt(indexPath.row)
-            self.refreshWeatherData()
+            self.showAlert(indexPath)
         }
         let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
-
         return swipeActions
     }
 }
@@ -180,15 +189,8 @@ extension WeatherListTableViewController: WeatherListViewModelProtocol {
     func didReceiveWeatherDetailsAt(_ indexPath: IndexPath) {
         // Update UI
         DispatchQueue.main.async {
-//            self.tableView.beginUpdates()
-//            self.tableView.reloadRows(at: [indexPath], with: .fade)
-//            self.tableView.endUpdates()
             self.tableView.reloadData()
         }
-    }
-    
-    func didFailWithError() {
-        // show toast message
     }
 }
 

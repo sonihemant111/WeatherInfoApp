@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol AddMoreCityViewModelProtocol {
+protocol AddMoreCityViewModelProtocol: class {
     func fetchedDataSuccessfully()
 }
 
 class AddMoreCityViewModel {
     var dbManager = DBManager()
     var addMoreCityViewModels = [CityModel]()
-    var delegate: AddMoreCityViewModelProtocol?
+    weak var delegate: AddMoreCityViewModelProtocol?
     
     // Method to fetch data from database
     func fetchSearchedCity(_ searchKeyword: String) {
@@ -57,7 +57,6 @@ class AddMoreCityViewModel {
     // Method to return item at specfic index
     func itemAt(_ index: Int) -> CityModel {
         let cityModel = addMoreCityViewModels[index]
-//        cityModel.cityName = cityModel.cityName.capitalized
         return cityModel
     }
 }

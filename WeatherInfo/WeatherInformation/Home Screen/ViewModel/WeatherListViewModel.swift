@@ -7,19 +7,14 @@
 
 import Foundation
 
-protocol WeatherListViewModelProtocol {
+protocol WeatherListViewModelProtocol: class {
     func didReceiveWeatherDetailsAt(_ indexPath: IndexPath)
-    func didFailWithError()
 }
 
 class WeatherListViewModel {
     var weatherViewModels = [WeatherViewModel]()
-    var delegate: WeatherListViewModelProtocol?
+    weak var delegate: WeatherListViewModelProtocol?
     let dbManager = DBManager()
-    
-    init() {
-        self.fetchSelectedCities()
-    }
     
     // Method to add new weather view model
     func addWeatherViewModel(_ weatherViewModel: WeatherViewModel) {
@@ -32,26 +27,29 @@ class WeatherListViewModel {
         delegate.didReceiveWeatherDetailsAt(indexPath)
     }
         
-    // Method to fetch selected cities
+    // Method to fetch selected cities including default three cities
     func fetchSelectedCities() {
         let arrCity = dbManager.fetchAllSelectedCities()
-        
-        for i in 0...arrCity.count - 1 {
-            let weatherViewModel = WeatherViewModel()
-            weatherViewModel.weatherData.name = arrCity[i].0
-            weatherViewModel.weatherData.cityID = arrCity[i].1
-            weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
-            weatherViewModel.delegate = self
-            weatherViewModel.getWeatherData()
-            weatherViewModels.append(weatherViewModel)
+        if arrCity.count > 0 {
+            for i in 0...arrCity.count - 1 {
+                let weatherViewModel = WeatherViewModel()
+                weatherViewModel.weatherData.name = arrCity[i].0
+                weatherViewModel.weatherData.cityID = arrCity[i].1
+                weatherViewModel.indexPath = IndexPath(row: weatherViewModels.count, section: 0)
+                weatherViewModel.delegate = self
+                weatherViewModel.getWeatherData()
+                weatherViewModels.append(weatherViewModel)
+            }
         }
     }
     
     // Method to refesh data
     func refreshTemperatureData() {
-        for weatherViewModel in 0...weatherViewModels.count - 1 {
-            let viewModel = weatherViewModels[weatherViewModel]
-            viewModel.getWeatherData()
+        if weatherViewModels.count > 0 {
+            for weatherViewModel in 0...weatherViewModels.count - 1 {
+                let viewModel = weatherViewModels[weatherViewModel]
+                viewModel.getWeatherData()
+            }
         }
     }
     
@@ -87,13 +85,13 @@ class WeatherListViewModel {
     }
 }
 
-
+// MARK: WeatherViewModelProtocol
 extension WeatherListViewModel: WeatherViewModelProtocol {
-    func didReceiveTemperatureData(_ indexPath: IndexPath) {
+    func didFailWithError(_ indexPath: IndexPath, _ error: WeatherInfoError) {
         self.updateUI(indexPath)
     }
     
-    func didFailWithError(_ indexPath: IndexPath) {
+    func didReceiveTemperatureData(_ indexPath: IndexPath) {
         self.updateUI(indexPath)
     }
 }

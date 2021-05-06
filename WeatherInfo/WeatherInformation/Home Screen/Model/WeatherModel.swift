@@ -7,9 +7,11 @@
 
 import Foundation
  
-enum WeatherInfoError {
-    case noDataFound
-    case noInternetConnection
+enum WeatherInfoError: String {
+    case noDataFound = "No Data Found."
+    case noInternetConnection = "Please check your internet connection."
+    case forecastDataNotAvailable = "Forecast Data is not available"
+    case someWentWrong
 }
 
 struct WeatherModel: Codable {
@@ -17,7 +19,7 @@ struct WeatherModel: Codable {
     var cityID: Int64?
     var name: String?
     var main = Main()
-    let sys = Sys()
+    var sys = Sys()
     let timezone: Int64 = 0
     var dt_txt: String?
     var weather = [Weather]()
@@ -29,9 +31,7 @@ struct WeatherModel: Codable {
 }
 
 struct Sys: Codable {
-    var country: String = ""
-    var sunrise: Int = 0
-    var sunset: Int = 0
+    var country: String?
 }
 
 struct Main: Codable {
@@ -51,7 +51,7 @@ struct Weather: Codable {
 }
 
 struct ForecastModel: Codable {
-    var list: [WeatherModel]
+    var list = [WeatherModel]()
     let city: City
 }
 
