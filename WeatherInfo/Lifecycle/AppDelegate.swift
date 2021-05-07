@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.fetchCityDataFromJSON()
         }
         dbManager.setDefaultCity()
-        print("Inside Appdelegate class")
         return true
     }
     
