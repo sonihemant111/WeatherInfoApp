@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         dbManager.setDefaultCity()
         print("Inside Appdelegate class")
+        print("Added one more print statement")
         return true
     }
     
